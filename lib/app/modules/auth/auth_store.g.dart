@@ -9,39 +9,32 @@ part of 'auth_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AuthStore on _AuthStoreBase, Store {
-  final _$valueAtom = Atom(name: '_AuthStoreBase.value');
+  final _$errorMessageAtom = Atom(name: '_AuthStoreBase.errorMessage');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  String get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set errorMessage(String value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
     });
   }
 
-  final _$_AuthStoreBaseActionController =
-      ActionController(name: '_AuthStoreBase');
+  final _$loginAsyncAction = AsyncAction('_AuthStoreBase.login');
 
   @override
-  void increment() {
-    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
-        name: '_AuthStoreBase.increment');
-    try {
-      return super.increment();
-    } finally {
-      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
-    }
+  Future<String> login() {
+    return _$loginAsyncAction.run(() => super.login());
   }
 
   @override
   String toString() {
     return '''
-value: ${value}
+errorMessage: ${errorMessage}
     ''';
   }
 }
