@@ -22,12 +22,12 @@ abstract class _AuthStoreBase with Store {
   @action
   Future<String> login() async {
     try {
-      final response = await _authRepository.login(
+      await _authRepository.login(
           emailController.text, passwordController.text);
     } catch (e) {
       errorMessage = e.toString();
     }
-    return '';
+    return errorMessage;
   }
 
   @action

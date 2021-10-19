@@ -3,13 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthRepository {
   final FirebaseAuth auth;
 
-  AuthRepository(this.auth);
+  AuthRepository(this.auth, {authInstance});
 
   Future<String> login(String email, String password) async {
-    UserCredential? userCredential;
     try {
-      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: "barry.allen@example.com", password: "SuperSecretPassword!");
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return 'O e-mail não foi encontrado';
@@ -17,7 +19,11 @@ class AuthRepository {
         return 'E-mail ou senha incorretos';
       }
     }
-    return userCredential!.user!.uid;
+    return '';
+  }
+
+  Future<bool> logged() async {
+    return auth.currentUser != null ? true : false;
   }
 
   Future<UserCredential> signInWithGoogle() async {
