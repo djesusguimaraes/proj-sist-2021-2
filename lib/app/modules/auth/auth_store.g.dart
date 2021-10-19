@@ -31,6 +31,14 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     return _$loginAsyncAction.run(() => super.login());
   }
 
+  final _$signInWithGoogleAsyncAction =
+      AsyncAction('_AuthStoreBase.signInWithGoogle');
+
+  @override
+  Future<UserCredential> signInWithGoogle() {
+    return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
+  }
+
   @override
   String toString() {
     return '''

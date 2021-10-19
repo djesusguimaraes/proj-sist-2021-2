@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/modules/auth/auth_repository.dart';
+
 
 part 'auth_store.g.dart';
 
@@ -26,5 +28,16 @@ abstract class _AuthStoreBase with Store {
       errorMessage = e.toString();
     }
     return '';
+  }
+
+  @action
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      final response = await _authRepository.login(
+          emailController.text, passwordController.text);
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+    throw 'error';
   }
 }

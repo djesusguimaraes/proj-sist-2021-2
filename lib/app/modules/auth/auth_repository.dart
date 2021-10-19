@@ -19,4 +19,14 @@ class AuthRepository {
     }
     return userCredential!.user!.uid;
   }
+
+  Future<UserCredential> signInWithGoogle() async {
+    GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+    googleProvider.addScope('email');
+    googleProvider.setCustomParameters({
+      'login_hint': 'user@example.com'
+    });
+    return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+  }
 }

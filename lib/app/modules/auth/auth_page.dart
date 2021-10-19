@@ -19,7 +19,10 @@ class AuthPageState extends State<AuthPage> {
         title: Text(widget.title),
       ),
       body: Column(
-        children: const <Widget>[],
+        children: <Widget>
+        [
+          ElevatedButton(onPressed: (){store.signInWithGoogle();}, child: Text('text'))
+        ],
       ),
     );
   }
