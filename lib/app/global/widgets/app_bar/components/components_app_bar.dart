@@ -1,6 +1,7 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/global/models/enums/filter.dart';
+import 'package:pscomidas/app/modules/auth/auth_module.dart';
 import 'package:pscomidas/app/modules/home/home_page.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 import 'package:flutter/painting.dart';
@@ -160,7 +161,9 @@ class UserAppBar extends StatelessWidget {
           "assets/images/user.png",
           width: screen.width * 0.02,
         ),
-        onTap: () {},
+        onTap: () {
+          Modular.to.pushReplacementNamed(AuthModule.routeName);
+        },
       ),
     );
   }
