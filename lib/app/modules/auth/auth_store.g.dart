@@ -35,7 +35,7 @@ mixin _$AuthStore on _AuthStoreBase, Store {
       AsyncAction('_AuthStoreBase.signInWithGoogle');
 
   @override
-  Future<UserCredential> signInWithGoogle() {
+  Future<void> signInWithGoogle() {
     return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
   }
 

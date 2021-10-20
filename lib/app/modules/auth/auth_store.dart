@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -31,13 +33,12 @@ abstract class _AuthStoreBase with Store {
   }
 
   @action
-  Future<UserCredential> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     try {
-      final response = await _authRepository.login(
-          emailController.text, passwordController.text);
+      await _authRepository.signInWithGoogle();
     } catch (e) {
-      errorMessage = e.toString();
+      throw e.toString();
     }
-    throw 'error';
+    
   }
 }

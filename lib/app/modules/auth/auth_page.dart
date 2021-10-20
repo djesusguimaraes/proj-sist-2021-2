@@ -35,7 +35,8 @@ class AuthPageState extends State<AuthPage> {
                 controller: store.passwordController,
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await store.signInWithGoogle();
                   if (Form.of(context)!.validate()) {
                     log('durr');
                   }
