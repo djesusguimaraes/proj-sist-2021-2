@@ -36,6 +36,7 @@ dependencies:
   cloud_firestore: ^2.5.3
   firebase_core: ^1.6.0
   firebase_auth: ^3.1.1
+  flutter_facebook_login_web: ^0.2.1+1 #mod
   flutter_modular: ^3.4.1
   mobx: ^2.0.4
   flutter_mobx: ^2.0.2
