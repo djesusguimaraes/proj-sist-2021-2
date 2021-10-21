@@ -149,29 +149,89 @@ class LocationAppBar extends StatelessWidget {
   }
 }
 
-class UserAppBar extends StatelessWidget {
+class UserAppBar extends StatefulWidget {
   const UserAppBar({Key? key}) : super(key: key);
 
+  @override
+  State<UserAppBar> createState() => _UserAppBarState();
+}
+
+class _UserAppBarState extends State<UserAppBar> {
   bool get logged {
     return FirebaseAuth.instance.currentUser != null ? true : false;
   }
+
   @override
   Widget build(BuildContext context) {
     List<PopupMenuItem> listy = [
       PopupMenuItem(
-        child: Column(
-          children: [
-            Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Icon(
-                      Icons.logout,
-                      color: Colors.red,
-                    ),
-                    Text('Sair'),
-                  ],
-                ),
-          ],
+        child: const ItemMenuHover(
+          title: "Chats",
+          icon: Icons.sms_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Pedidos",
+          icon: Icons.receipt_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Meus Cupons",
+          icon: Icons.local_offer_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Pagamento",
+          icon: Icons.payment_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Fidelidade",
+          icon: Icons.card_giftcard_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Ajuda",
+          icon: Icons.support_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Editar Dados",
+          icon: Icons.settings_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Segurança",
+          icon: Icons.shield_outlined,
+        ),
+        padding: const EdgeInsets.all(5.0),
+        onTap: () {},
+      ),
+      PopupMenuItem(
+        child: const ItemMenuHover(
+          title: "Sair",
+          icon: Icons.logout_outlined,
         ),
         padding: const EdgeInsets.all(5.0),
         onTap: () async {
@@ -182,19 +242,70 @@ class UserAppBar extends StatelessWidget {
     ];
     return logged
         ? PopupMenuButton(
-      icon: const Icon(
-        Icons.person_outline_outlined,
-        color: Colors.red,
-        size: 37,
-      ),
-      itemBuilder: (_) => listy,
-    )
-        :IconButton(
-      icon: const Icon(Icons.login),
-      color: Colors.red,
-      onPressed: () {
-        Modular.to.pushNamed(AuthModule.routeName);
+            icon: const Icon(
+              Icons.person_outline_outlined,
+              color: Colors.red,
+              size: 37,
+            ),
+            itemBuilder: (_) => listy,
+          )
+        : IconButton(
+            icon: const Icon(Icons.login),
+            color: Colors.red,
+            onPressed: () {
+              Modular.to.pushNamed(AuthModule.routeName);
+            },
+          );
+  }
+}
+
+class ItemMenuHover extends StatefulWidget {
+  const ItemMenuHover({Key? key, required this.title, required this.icon})
+      : super(key: key);
+  final String title;
+  final IconData icon;
+
+  @override
+  _ItemMenuHoverState createState() => _ItemMenuHoverState();
+}
+
+class _ItemMenuHoverState extends State<ItemMenuHover> {
+  Color color = Colors.black54;
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onHover: (_) {
+        setState(() {
+          color = Colors.red;
+        });
       },
+      onExit: (_) {
+        setState(() {
+          color = Colors.black54;
+        });
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: 8.0,
+            ),
+            child: Icon(
+              widget.icon,
+              color: color,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              widget.title,
+              textAlign: TextAlign.left,
+              style: TextStyle(color: color),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
