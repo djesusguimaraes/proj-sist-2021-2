@@ -11,20 +11,30 @@ abstract class _AuthStoreBase with Store {
 
   _AuthStoreBase(this._authRepository);
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @observable
   String errorMessage = '';
 
+  @observable
+  bool logged = false;
+
   @action
-  Future<String> login() async {
+  Future<void> login() async {
     try {
-      await _authRepository.login(
-          emailController.text, passwordController.text);
+      if (await _authRepository.login(
+          emailController.text, passwordController.text) is String) {
+        logged = true;
+      }
     } catch (e) {
       errorMessage = e.toString();
     }
-    return errorMessage;
+  }
+
+  @action
+  void dispose() {
+    logged = false;
+    errorMessage = '';
   }
 }

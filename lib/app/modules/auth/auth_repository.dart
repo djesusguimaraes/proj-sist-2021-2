@@ -5,7 +5,7 @@ class AuthRepository {
 
   AuthRepository(this.auth, {authInstance});
 
-  Future<String> login(String email, String password) async {
+  Future<String?> login(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email,
@@ -14,15 +14,11 @@ class AuthRepository {
       return userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return 'O e-mail não foi encontrado';
-      } else if (e.code == 'wrong-password') {
-        return 'E-mail ou senha incorretos';
+        throw Exception('O e-mail não foi encontrado');
+      } else if (e.code == 'wrong-password' || e.code == 'invalid-email') {
+        throw Exception('E-mail ou senha incorretos');
       }
     }
-    return '';
-  }
-
-  Future<bool> logged() async {
-    return auth.currentUser != null ? true : false;
+    throw Exception('Houve um erro desconhecido ao tentar fazer login.');
   }
 }
