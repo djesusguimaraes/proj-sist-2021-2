@@ -32,7 +32,11 @@ class AuthRepository {
     });
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithPopup(facebookProvider);
+    try {
+      return await FirebaseAuth.instance.signInWithPopup(facebookProvider);
+    } on Exception catch (_) {
+      throw Exception("Houve um erro ao tentar entrar no Facebook");
+    }
 
     // Or use signInWithRedirect
     // return await FirebaseAuth.instance.signInWithRedirect(facebookProvider);
@@ -47,8 +51,8 @@ class AuthRepository {
     try {
       userCredential =
           await FirebaseAuth.instance.signInWithPopup(googleProvider);
-    } on Exception catch (e) {
-      // TODO
+    } on Exception catch (_) {
+      // TODO: tratar erro de login com google
     }
     return userCredential!;
   }
