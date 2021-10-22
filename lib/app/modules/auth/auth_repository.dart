@@ -1,17 +1,25 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 
-class AuthRepository {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pscomidas/app/modules/auth/auth_service.dart';
+
+class AuthRepository extends AuthService {
   final FirebaseAuth auth;
 
   AuthRepository(this.auth, {authInstance});
 
-  Future<String?> login(String email, String password) async {
+  @override
+  Future<dynamic> login(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user!.uid;
+      if (userCredential.user!.emailVerified) {
+        return userCredential;
+      } else {
+        return checkEmail(userCredential);
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('O e-mail não foi encontrado');
@@ -20,5 +28,12 @@ class AuthRepository {
       }
     }
     throw Exception('Houve um erro desconhecido ao tentar fazer login.');
+  }
+
+  @override
+  Future<void> checkEmail(UserCredential userCredential) async {
+    if (userCredential.user!.emailVerified == false) {
+      await userCredential.user!.sendEmailVerification();
+    }
   }
 }

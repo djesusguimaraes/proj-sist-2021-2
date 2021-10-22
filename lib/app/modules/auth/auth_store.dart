@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/modules/auth/auth_repository.dart';
@@ -20,12 +21,17 @@ abstract class _AuthStoreBase with Store {
   @observable
   bool logged = false;
 
+  @observable
+  bool verifyEmail = false;
+
   @action
   Future<void> login() async {
     try {
       if (await _authRepository.login(
-          emailController.text, passwordController.text) is String) {
+          emailController.text, passwordController.text) is AuthCredential) {
         logged = true;
+      } else {
+        verifyEmail = true;
       }
     } catch (e) {
       errorMessage = e.toString();

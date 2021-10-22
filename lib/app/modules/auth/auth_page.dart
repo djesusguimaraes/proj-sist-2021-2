@@ -26,6 +26,12 @@ class AuthPageState extends State<AuthPage> {
     );
     disposers.add(
       reaction(
+        (_) => store.verifyEmail == true,
+        (_) => Navigator.pushNamed(context, '/verifyEmail'),
+      ),
+    );
+    disposers.add(
+      reaction(
         (_) => store.errorMessage.isNotEmpty,
         (_) {
           Flushbar(

@@ -39,6 +39,21 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  final _$verifyEmailAtom = Atom(name: '_AuthStoreBase.verifyEmail');
+
+  @override
+  bool get verifyEmail {
+    _$verifyEmailAtom.reportRead();
+    return super.verifyEmail;
+  }
+
+  @override
+  set verifyEmail(bool value) {
+    _$verifyEmailAtom.reportWrite(value, super.verifyEmail, () {
+      super.verifyEmail = value;
+    });
+  }
+
   final _$loginAsyncAction = AsyncAction('_AuthStoreBase.login');
 
   @override
@@ -64,7 +79,8 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   String toString() {
     return '''
 errorMessage: ${errorMessage},
-logged: ${logged}
+logged: ${logged},
+verifyEmail: ${verifyEmail}
     ''';
   }
 }
