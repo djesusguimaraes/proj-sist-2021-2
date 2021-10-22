@@ -39,6 +39,17 @@ abstract class _AuthStoreBase with Store {
   }
 
   @action
+  Future<void> logFace() async {
+    try {
+      if (await _authRepository.signInWithFacebook() is UserCredential) {
+        logged = true;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+  }
+
+  @action
   void dispose() {
     logged = false;
     errorMessage = '';
