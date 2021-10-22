@@ -5,6 +5,7 @@ import 'package:pscomidas/app/modules/cart/cart_store.dart';
 import 'package:pscomidas/app/modules/home/home_module.dart';
 import 'package:pscomidas/app/modules/home/store/home_store.dart';
 import 'package:pscomidas/app/modules/restaurant/restaurant_module.dart';
+import 'modules/auth/auth_module.dart';
 
 class AppModule extends Module {
   @override
@@ -15,9 +16,9 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ModuleRoute('/home', module: HomeModule()),
+    ModuleRoute(Modular.initialRoute, module: HomeModule()),
     ModuleRoute(RestaurantModule.routeName, module: RestaurantModule()),
     ModuleRoute(CartModule.routeName, module: CartModule()),
-    ModuleRoute(Modular.initialRoute, module: AuthModule()),
+    ModuleRoute(AuthModule.routeName, module: AuthModule()),
   ];
 }

@@ -1,6 +1,7 @@
-import 'dart:developer';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/modules/auth/auth_store.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,48 @@ bool _showPassword = false;
 
 class AuthPageState extends State<AuthPage> {
   final AuthStore store = Modular.get();
-  final emailController = TextEditingController();
+
+  List<ReactionDisposer> disposers = [];
+
+  @override
+  void initState() {
+    disposers.add(
+      reaction(
+        (_) => store.logged == true,
+        (_) => Navigator.pushNamed(context, '/'),
+      ),
+    );
+    disposers.add(
+      reaction(
+        (_) => store.errorMessage.isNotEmpty,
+        (_) {
+          Flushbar(
+            title: 'Ocorreu um erro ao tentar fazer login:',
+            icon: const Icon(
+              Icons.sentiment_dissatisfied_outlined,
+            ),
+            message: store.errorMessage,
+            backgroundColor: Colors.red,
+            borderRadius: BorderRadius.circular(10.0),
+            padding: const EdgeInsets.all(20.0),
+            margin:
+                const EdgeInsets.symmetric(horizontal: 100.0, vertical: 10.0),
+            animationDuration: const Duration(seconds: 1),
+          ).show(context);
+        },
+      ),
+    );
+    super.initState();
+  }
 
   @override
   void dispose() {
-    emailController.dispose();
+    store.dispose();
+    store.emailController.text = '';
+    store.passwordController.text = '';
+    for (var i = 0; i <= disposers.length; i++) {
+      dispose();
+    }
     super.dispose();
   }
 
@@ -54,7 +92,7 @@ class AuthPageState extends State<AuthPage> {
                       children: [
                         Image.asset(
                           "assets/images/logo.png",
-                          width: 200,
+                          width: 220,
                         ),
                       ],
                     ),
@@ -71,7 +109,7 @@ class AuthPageState extends State<AuthPage> {
                     const Text(
                       'Como deseja continuar?',
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 18,
                         color: Colors.grey,
                       ),
                     ),
@@ -83,10 +121,6 @@ class AuthPageState extends State<AuthPage> {
                                 ? 'E-mail Inválido'
                                 : null,
                         decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.account_circle_rounded,
-                            color: Colors.grey,
-                          ),
                           hintText: 'E-mail',
                           border: OutlineInputBorder(
                             borderSide:
@@ -102,10 +136,6 @@ class AuthPageState extends State<AuthPage> {
                     SizedBox(
                       child: TextFormField(
                         decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                          ),
                           hintText: 'Senha',
                           border: OutlineInputBorder(
                             borderSide:
@@ -150,9 +180,9 @@ class AuthPageState extends State<AuthPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (Form.of(context)!.validate()) {
-                                store.login();
+                                await store.login();
                               }
                             },
                             style: ButtonStyle(
@@ -182,7 +212,9 @@ class AuthPageState extends State<AuthPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await store.logGoogle();
+                            },
                             icon: SizedBox(
                               width: 35,
                               height: 35,
@@ -214,7 +246,9 @@ class AuthPageState extends State<AuthPage> {
                         const SizedBox(width: 20),
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await store.logFace();
+                            },
                             icon: const Icon(
                               Icons.facebook_outlined,
                               size: 35,

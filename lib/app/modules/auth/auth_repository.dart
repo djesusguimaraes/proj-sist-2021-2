@@ -5,24 +5,43 @@ class AuthRepository {
 
   AuthRepository(this.auth, {authInstance});
 
-  Future<String> login(String email, String password) async {
+  Future<UserCredential> login(String email, String password) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      return await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return 'O e-mail não foi encontrado';
-      } else if (e.code == 'wrong-password') {
-        return 'E-mail ou senha incorretos';
+        throw Exception('O e-mail não foi encontrado');
+      } else if (e.code == 'wrong-password' || e.code == 'invalid-email') {
+        throw Exception('E-mail ou senha incorretos');
       }
     }
-    return '';
+    throw Exception('Houve um erro desconhecido ao tentar fazer login.');
   }
 
-  Future<bool> logged() async {
-    return auth.currentUser != null ? true : false;
+  Future<UserCredential> signInWithFacebook() async {
+    FacebookAuthProvider facebookProvider = FacebookAuthProvider();
+
+    facebookProvider.addScope('email');
+    facebookProvider.setCustomParameters({'display': 'popup'});
+    try {
+      return await FirebaseAuth.instance.signInWithPopup(facebookProvider);
+    } on Exception catch (_) {
+      throw Exception("Houve um erro ao tentar entrar no Facebook");
+    }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+    googleProvider.addScope('email');
+    googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+    try {
+      return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+    } on Exception catch (_) {
+      throw Exception('Houve um erro ao fazer login com Google');
+    }
   }
 }

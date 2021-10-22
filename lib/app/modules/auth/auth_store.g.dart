@@ -24,17 +24,54 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  final _$loggedAtom = Atom(name: '_AuthStoreBase.logged');
+
+  @override
+  bool get logged {
+    _$loggedAtom.reportRead();
+    return super.logged;
+  }
+
+  @override
+  set logged(bool value) {
+    _$loggedAtom.reportWrite(value, super.logged, () {
+      super.logged = value;
+    });
+  }
+
   final _$loginAsyncAction = AsyncAction('_AuthStoreBase.login');
 
   @override
-  Future<String> login() {
+  Future<void> login() {
     return _$loginAsyncAction.run(() => super.login());
+  }
+
+  final _$logFaceAsyncAction = AsyncAction('_AuthStoreBase.logFace');
+
+  @override
+  Future<void> logFace() {
+    return _$logFaceAsyncAction.run(() => super.logFace());
+  }
+
+  final _$_AuthStoreBaseActionController =
+      ActionController(name: '_AuthStoreBase');
+
+  @override
+  void dispose() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.dispose');
+    try {
+      return super.dispose();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
   String toString() {
     return '''
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+logged: ${logged}
     ''';
   }
 }
