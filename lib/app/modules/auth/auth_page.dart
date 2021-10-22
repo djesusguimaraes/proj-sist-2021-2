@@ -35,6 +35,7 @@ class AuthPageState extends State<AuthPage> {
             title: 'Ocorreu um erro ao tentar fazer login:',
             icon: const Icon(
               Icons.sentiment_dissatisfied_outlined,
+              color: Colors.white70,
             ),
             message: store.errorMessage,
             backgroundColor: Colors.red,
@@ -122,12 +123,16 @@ class AuthPageState extends State<AuthPage> {
                                 : null,
                         decoration: InputDecoration(
                           hintText: 'E-mail',
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                           border: OutlineInputBorder(
                             borderSide:
                                 const BorderSide(width: 3, color: Colors.red),
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
+                        cursorColor: Colors.red,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller: store.emailController,
                       ),
@@ -137,25 +142,26 @@ class AuthPageState extends State<AuthPage> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           hintText: 'Senha',
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                           border: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(width: 3, color: Colors.red),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          suffixIcon: GestureDetector(
-                            child: Icon(
+                          suffixIcon: IconButton(
+                            icon: Icon(
                               _showPassword == false
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.black,
+                              color: Colors.black87,
                             ),
-                            onTap: () {
-                              setState(() {
-                                _showPassword = !_showPassword;
-                              });
+                            hoverColor: Colors.transparent,
+                            onPressed: () {
+                              setState(() => _showPassword = !_showPassword);
                             },
                           ),
                         ),
+                        cursorColor: Colors.red,
                         obscureText: _showPassword == false ? true : false,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller: store.passwordController,
