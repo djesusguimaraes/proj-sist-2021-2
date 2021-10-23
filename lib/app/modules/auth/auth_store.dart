@@ -28,7 +28,9 @@ abstract class _AuthStoreBase with Store {
   Future<void> login() async {
     try {
       if (await _authRepository.login(
-          emailController.text, passwordController.text) is UserCredential) {
+        emailController.text,
+        passwordController.text,
+      ) is UserCredential) {
         logged = true;
         emailVerified = true;
       }
@@ -55,6 +57,17 @@ abstract class _AuthStoreBase with Store {
     await user.reload();
     if (user.emailVerified) {
       emailVerified = true;
+    }
+  }
+
+  @action
+  Future<void> logGoogle() async {
+    try {
+      if (await _authRepository.signInWithGoogle() is UserCredential) {
+        logged = true;
+      }
+    } catch (e) {
+      errorMessage = e.toString();
     }
   }
 

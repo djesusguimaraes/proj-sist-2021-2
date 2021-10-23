@@ -77,6 +77,13 @@ mixin _$AuthStore on _AuthStoreBase, Store {
         .run(() => super.checkEmailVerified());
   }
 
+  final _$logGoogleAsyncAction = AsyncAction('_AuthStoreBase.logGoogle');
+
+  @override
+  Future<void> logGoogle() {
+    return _$logGoogleAsyncAction.run(() => super.logGoogle());
+  }
+
   final _$_AuthStoreBaseActionController =
       ActionController(name: '_AuthStoreBase');
 

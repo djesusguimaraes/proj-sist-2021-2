@@ -9,7 +9,7 @@ class AuthRepository extends AuthService {
   AuthRepository(this.auth, {authInstance});
 
   @override
-  Future<dynamic> login(String email, String password) async {
+  Future<UserCredential> login(String email, String password) async {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: email,
@@ -19,7 +19,6 @@ class AuthRepository extends AuthService {
         return userCredential;
       } else {
         userCredential.user!.sendEmailVerification();
-        return '';
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -33,38 +32,27 @@ class AuthRepository extends AuthService {
 
   @override
   Future<UserCredential> signInWithFacebook() async {
-    // Create a new provider
     FacebookAuthProvider facebookProvider = FacebookAuthProvider();
 
     facebookProvider.addScope('email');
-    facebookProvider.setCustomParameters({
-      'display': 'popup',
-    });
-
-    // Once signed in, return the UserCredential
+    facebookProvider.setCustomParameters({'display': 'popup'});
     try {
       return await FirebaseAuth.instance.signInWithPopup(facebookProvider);
     } on Exception catch (_) {
       throw Exception("Houve um erro ao tentar entrar no Facebook");
     }
-
-    // Or use signInWithRedirect
-    // return await FirebaseAuth.instance.signInWithRedirect(facebookProvider);
   }
 
   @override
   Future<UserCredential> signInWithGoogle() async {
-    UserCredential? userCredential;
     GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
     googleProvider.addScope('email');
     googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
     try {
-      userCredential =
-          await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      return await FirebaseAuth.instance.signInWithPopup(googleProvider);
     } on Exception catch (_) {
-      // TODO: tratar erro de login com google
+      throw Exception('Houve um erro ao fazer login com Google');
     }
-    return userCredential!;
   }
 }
