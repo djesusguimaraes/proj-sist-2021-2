@@ -157,105 +157,21 @@ class UserAppBar extends StatefulWidget {
 }
 
 class _UserAppBarState extends State<UserAppBar> {
-  bool get logged {
-    return FirebaseAuth.instance.currentUser != null ? true : false;
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<PopupMenuItem> listy = [
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Chats",
-          icon: Icons.sms_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
+    return PopupMenuButton(
+      icon: const Icon(
+        Icons.person_outline_outlined,
+        color: Colors.red,
+        size: 37,
       ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Pedidos",
-          icon: Icons.receipt_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Meus Cupons",
-          icon: Icons.local_offer_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Pagamento",
-          icon: Icons.payment_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Fidelidade",
-          icon: Icons.card_giftcard_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Ajuda",
-          icon: Icons.support_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Editar Dados",
-          icon: Icons.settings_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Segurança",
-          icon: Icons.shield_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () {},
-      ),
-      PopupMenuItem(
-        child: const ItemMenuHover(
-          title: "Sair",
-          icon: Icons.logout_outlined,
-        ),
-        padding: const EdgeInsets.all(5.0),
-        onTap: () async {
-          await FirebaseAuth.instance.signOut();
-          Modular.to.pushNamed(AuthModule.routeName);
-        },
-      ),
-    ];
-    return logged
-        ? PopupMenuButton(
-            icon: const Icon(
-              Icons.person_outline_outlined,
-              color: Colors.red,
-              size: 37,
-            ),
-            itemBuilder: (_) => listy,
-          )
-        : IconButton(
-            icon: const Icon(Icons.login),
-            color: Colors.red,
-            onPressed: () {
-              Modular.to.pushNamed(AuthModule.routeName);
-            },
-          );
+      itemBuilder: (_) => UserProfileOptions.listy,
+    );
   }
 }
 
@@ -327,4 +243,84 @@ class CartAppBar extends StatelessWidget {
       ),
     );
   }
+}
+
+class UserProfileOptions {
+  static List<PopupMenuItem> listy = [
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Chats",
+        icon: Icons.sms_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Pedidos",
+        icon: Icons.receipt_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Meus Cupons",
+        icon: Icons.local_offer_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Pagamento",
+        icon: Icons.payment_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Fidelidade",
+        icon: Icons.card_giftcard_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Ajuda",
+        icon: Icons.support_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Editar Dados",
+        icon: Icons.settings_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Segurança",
+        icon: Icons.shield_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () {},
+    ),
+    PopupMenuItem(
+      child: const ItemMenuHover(
+        title: "Sair",
+        icon: Icons.logout_outlined,
+      ),
+      padding: const EdgeInsets.all(5.0),
+      onTap: () async {
+        await FirebaseAuth.instance.signOut();
+        Modular.to.pushNamed(AuthModule.routeName);
+      },
+    ),
+  ];
 }
