@@ -19,7 +19,7 @@ bool _showPassword = false;
 class AuthPageState extends State<AuthPage> {
   final AuthStore store = Modular.get();
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<ReactionDisposer> disposers = [];
 
   @override
