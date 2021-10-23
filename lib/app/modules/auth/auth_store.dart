@@ -22,7 +22,7 @@ abstract class _AuthStoreBase with Store {
   bool logged = false;
 
   @observable
-  bool emailVerified = false;
+  bool emailVerified = true;
 
   @action
   Future<void> login() async {
@@ -32,7 +32,8 @@ abstract class _AuthStoreBase with Store {
         passwordController.text,
       ) is UserCredential) {
         logged = true;
-        emailVerified = true;
+      } else {
+        emailVerified = false;
       }
     } catch (e) {
       errorMessage = e.toString();
