@@ -22,16 +22,15 @@ abstract class _AuthStoreBase with Store {
   bool logged = false;
 
   @observable
-  bool verifyEmail = false;
+  bool emailVerified = false;
 
   @action
   Future<void> login() async {
     try {
       if (await _authRepository.login(
-          emailController.text, passwordController.text) is AuthCredential) {
+          emailController.text, passwordController.text) is UserCredential) {
         logged = true;
-      } else {
-        verifyEmail = true;
+        emailVerified = true;
       }
     } catch (e) {
       errorMessage = e.toString();
@@ -46,6 +45,16 @@ abstract class _AuthStoreBase with Store {
       }
     } catch (e) {
       errorMessage = e.toString();
+    }
+  }
+
+  @action
+  Future<void> checkEmailVerified() async {
+    User user;
+    user = FirebaseAuth.instance.currentUser!;
+    await user.reload();
+    if (user.emailVerified) {
+      emailVerified = true;
     }
   }
 

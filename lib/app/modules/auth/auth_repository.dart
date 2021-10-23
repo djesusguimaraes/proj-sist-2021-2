@@ -18,7 +18,8 @@ class AuthRepository extends AuthService {
       if (userCredential.user!.emailVerified) {
         return userCredential;
       } else {
-        return checkEmail(userCredential);
+        userCredential.user!.sendEmailVerification();
+        return '';
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -31,12 +32,6 @@ class AuthRepository extends AuthService {
   }
 
   @override
-  Future<void> checkEmail(UserCredential userCredential) async {
-    if (userCredential.user!.emailVerified == false) {
-      await userCredential.user!.sendEmailVerification();
-    }
-  }
-
   Future<UserCredential> signInWithFacebook() async {
     // Create a new provider
     FacebookAuthProvider facebookProvider = FacebookAuthProvider();
@@ -57,6 +52,7 @@ class AuthRepository extends AuthService {
     // return await FirebaseAuth.instance.signInWithRedirect(facebookProvider);
   }
 
+  @override
   Future<UserCredential> signInWithGoogle() async {
     UserCredential? userCredential;
     GoogleAuthProvider googleProvider = GoogleAuthProvider();

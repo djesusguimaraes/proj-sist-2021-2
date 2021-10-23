@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/modules/auth/auth_store.dart';
 import 'package:flutter/material.dart';
+import 'package:pscomidas/app/modules/auth/pages/verify_screen.dart';
 
 class AuthPage extends StatefulWidget {
   final String title;
@@ -26,8 +27,13 @@ class AuthPageState extends State<AuthPage> {
     );
     disposers.add(
       reaction(
-        (_) => store.verifyEmail == true,
-        (_) => Navigator.pushNamed(context, '/verifyEmail'),
+        (_) => store.emailVerified == false,
+        (_) => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const VerifyScreen(),
+          ),
+        ),
       ),
     );
     disposers.add(
@@ -84,7 +90,7 @@ class AuthPageState extends State<AuthPage> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await store.logFace();
+                  await store.login();
                   if (Form.of(context)!.validate()) {}
                 },
                 child: const Text('Login'),
