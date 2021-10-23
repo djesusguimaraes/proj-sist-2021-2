@@ -160,6 +160,7 @@ class UserAppBar extends StatefulWidget {
 }
 
 class _UserAppBarState extends State<UserAppBar> {
+  final bool logged = FirebaseAuth.instance.currentUser != null ? true : false;
   @override
   void initState() {
     super.initState();
@@ -167,14 +168,26 @@ class _UserAppBarState extends State<UserAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      icon: const Icon(
-        Icons.person_outline_outlined,
-        color: Colors.red,
-        size: 37,
-      ),
-      itemBuilder: (_) => UserProfileOptions.listy,
-    );
+    return logged
+        ? PopupMenuButton(
+            icon: const Icon(
+              Icons.person_outline_outlined,
+              color: Colors.red,
+              size: 37,
+            ),
+            itemBuilder: (_) => UserProfileOptions.listy,
+          )
+        : IconButton(
+            icon: const Icon(
+              Icons.login,
+              color: Colors.red,
+              size: 37,
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Modular.to.pushReplacementNamed(AuthModule.routeName);
+            },
+          );
   }
 }
 
