@@ -56,8 +56,9 @@ abstract class _AuthStoreBase with Store {
     User user;
     user = FirebaseAuth.instance.currentUser!;
     await user.reload();
-    if (user.emailVerified) {
-      emailVerified = true;
+    if (!user.emailVerified) {
+      user.sendEmailVerification();
+      emailVerified = false;
     }
   }
 
@@ -76,5 +77,7 @@ abstract class _AuthStoreBase with Store {
   void dispose() {
     logged = false;
     errorMessage = '';
+    emailController.clear();
+    passwordController.clear();
   }
 }

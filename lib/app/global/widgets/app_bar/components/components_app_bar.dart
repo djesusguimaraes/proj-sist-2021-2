@@ -202,7 +202,7 @@ class UserAppBar extends StatelessWidget {
             color: Colors.red,
             hoverColor: Colors.transparent,
             onPressed: () {
-              Modular.to.pushNamed(AuthModule.routeName);
+              Modular.to.pushReplacementNamed(AuthModule.routeName);
             },
           );
   }

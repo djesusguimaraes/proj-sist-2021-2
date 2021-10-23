@@ -11,15 +11,10 @@ class AuthRepository extends AuthService {
   @override
   Future<UserCredential> login(String email, String password) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      return await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      if (userCredential.user!.emailVerified) {
-        return userCredential;
-      } else {
-        userCredential.user!.sendEmailVerification();
-      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('O e-mail não foi encontrado');
