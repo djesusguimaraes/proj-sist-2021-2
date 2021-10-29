@@ -8,8 +8,8 @@ class RegisterModule extends Module {
   static String get routeName => '/register';
   @override
   final List<Bind> binds = [
-    Bind.lazySingleton((i) => RegisterStore()),
     Bind.lazySingleton((i) => RegisterRepository(FirebaseAuth.instance)),
+    Bind.lazySingleton((i) => RegisterStore()),
   ];
 
   @override
