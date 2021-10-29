@@ -51,38 +51,60 @@ class RegisterPageState extends State<RegisterPage> {
             ),
             child: Form(
               key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Image.asset(
-                    'assets/images/logo.png',
-                    scale: 2.4,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      'Falta pouco para matar sua fome!',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Image.asset(
+                      'assets/images/logo.png',
+                      scale: 2.4,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Falta pouco para matar sua fome!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      'Insira seus dados para iniciar o cadastro',
-                      style: fontFamily,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        'Insira seus dados para iniciar o cadastro',
+                        style: fontFamily,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  CustomTextField(
-                    controller: store.emailController,
-                    title: 'E-mail',
-                    hint: 'Insira seu email',
-                  ),
-                  const SizedBox(height: 10),
-                  const CustomSubmit(label: 'Enviar')
-                ],
+                    const SizedBox(height: 20),
+                    CustomTextField(
+                      controller: store.nameController,
+                      title: 'Nome',
+                      hint: 'Insira seu nome completo',
+                    ),
+                    CustomTextField(
+                      controller: store.cpfController,
+                      title: 'CPF',
+                      hint: 'Insira seu CPF',
+                    ),
+                    CustomTextField(
+                      controller: store.bornController,
+                      title: 'Data de Nascimento',
+                      hint: 'Insira sua data de nascimento',
+                    ),
+                    CustomTextField(
+                      controller: store.emailController,
+                      title: 'E-mail',
+                      hint: 'Insira seu email',
+                    ),
+                    CustomTextField(
+                      controller: store.phoneController,
+                      title: 'Telefone com (DDD)',
+                      hint: 'Insira seu telefone',
+                    ),
+                    const SizedBox(height: 10),
+                    const CustomSubmit(label: 'Enviar')
+                  ],
+                ),
               ),
             ),
           ),
