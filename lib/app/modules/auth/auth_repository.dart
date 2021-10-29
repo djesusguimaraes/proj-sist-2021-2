@@ -1,16 +1,25 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 
-class AuthRepository {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pscomidas/app/modules/auth/auth_service.dart';
+
+class AuthRepository extends AuthService {
   final FirebaseAuth auth;
 
   AuthRepository(this.auth, {authInstance});
 
-  Future<UserCredential> login(String email, String password) async {
+  @override
+  Future<bool> login(String email, String password) async {
     try {
-      return await auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      User user = FirebaseAuth.instance.currentUser!;
+      if (user.emailVerified == false) {
+        user.sendEmailVerification();
+      }
+      return user.emailVerified;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('O e-mail não foi encontrado');
@@ -21,6 +30,7 @@ class AuthRepository {
     throw Exception('Houve um erro desconhecido ao tentar fazer login.');
   }
 
+  @override
   Future<UserCredential> signInWithFacebook() async {
     FacebookAuthProvider facebookProvider = FacebookAuthProvider();
 
@@ -33,6 +43,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<UserCredential> signInWithGoogle() async {
     GoogleAuthProvider googleProvider = GoogleAuthProvider();
 

@@ -21,13 +21,19 @@ abstract class _AuthStoreBase with Store {
   @observable
   bool logged = false;
 
+  @observable
+  bool emailVerified = true;
+
   @action
   Future<void> login() async {
     try {
       if (await _authRepository.login(
-        emailController.text,
-        passwordController.text,
-      ) is UserCredential) {
+            emailController.text,
+            passwordController.text,
+          ) ==
+          false) {
+        emailVerified = false;
+      } else {
         logged = true;
       }
     } catch (e) {
@@ -47,6 +53,16 @@ abstract class _AuthStoreBase with Store {
   }
 
   @action
+  Future<void> checkEmailVerified() async {
+    User user;
+    user = FirebaseAuth.instance.currentUser!;
+    await user.reload();
+    if (user.emailVerified == true) {
+      emailVerified = true;
+    }
+  }
+
+  @action
   Future<void> logGoogle() async {
     try {
       if (await _authRepository.signInWithGoogle() is UserCredential) {
@@ -61,5 +77,7 @@ abstract class _AuthStoreBase with Store {
   void dispose() {
     logged = false;
     errorMessage = '';
+    emailController.clear();
+    passwordController.clear();
   }
 }
