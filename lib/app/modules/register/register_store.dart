@@ -18,6 +18,7 @@ abstract class _RegisterStoreBase with Store {
   TextEditingController bornController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController checkPasswordController = TextEditingController();
 
   @observable
   String? errorMessage;

@@ -1,8 +1,10 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/modules/auth/auth_module.dart';
 import 'package:pscomidas/app/modules/register/register_store.dart';
 import 'package:flutter/material.dart';
@@ -23,17 +25,54 @@ class RegisterPageState extends State<RegisterPage> {
 
   TextStyle get digitedText => GoogleFonts.getFont('Sen', fontSize: 14.0);
 
+  List<ReactionDisposer> disposers = [];
   final _formKey = GlobalKey<FormState>();
   bool checked = false;
 
   @override
   void initState() {
+    disposers = [
+      reaction(
+        (_) => store.registered,
+        (_) => Modular.to.navigate('/'),
+      ),
+      reaction(
+        (_) => store.errorMessage != null,
+        (_) => Flushbar(
+          title: 'Ocorreu um erro ao registrar:',
+          icon: const Icon(
+            Icons.sentiment_dissatisfied_outlined,
+            color: Colors.white70,
+          ),
+          message: store.errorMessage,
+          backgroundColor: Colors.red,
+          borderRadius: BorderRadius.circular(10.0),
+          padding: const EdgeInsets.all(20.0),
+          margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 10.0),
+          animationDuration: const Duration(milliseconds: 500),
+          shouldIconPulse: false,
+          mainButton: TextButton(
+            child: const Text(
+              'Fechar',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              store.errorMessage = '';
+              Navigator.pop(context);
+            },
+          ),
+        ).show(context),
+      ),
+    ];
     super.initState();
   }
 
   @override
   void dispose() {
     store.dispose();
+    for (var i in disposers) {
+      i.call();
+    }
     super.dispose();
   }
 
@@ -141,6 +180,30 @@ class RegisterPageState extends State<RegisterPage> {
                             )
                           ],
                         ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          isPassword: true,
+                          controller: store.passwordController,
+                          title: 'Senha',
+                          hint: 'Insira sua senha',
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return 'A senha deve ter no mínimo 6 caracteres';
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          isPassword: true,
+                          controller: store.checkPasswordController,
+                          title: 'Confirmação de senha',
+                          hint: 'Insira novamente a senha',
+                          validator: (value) {
+                            if (value != store.passwordController.text) {
+                              return 'As senhas não coincidem';
+                            }
+                          },
+                        ),
                         const SizedBox(height: 20),
                         Wrap(
                           children: [
@@ -165,25 +228,36 @@ class RegisterPageState extends State<RegisterPage> {
                         const SizedBox(height: 10),
                         CustomSubmit(
                           label: 'Enviar',
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate() &&
                                 checked != false) {
-                              store.register();
+                              await store.register();
                             }
                           },
                         ),
                         const SizedBox(height: 10),
-                        TextButton(
-                          onPressed: () {
-                            Modular.to.navigate(AuthModule.routeName);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            textStyle: TextStyle(
-                              color: Colors.red,
-                              fontFamily: GoogleFonts.getFont('Sen').fontFamily,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {
+                                  Modular.to.navigate(AuthModule.routeName);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size.fromHeight(40),
+                                ),
+                                child: Text(
+                                  'Já sou cadastrado',
+                                  style: TextStyle(
+                                    fontFamily:
+                                        GoogleFonts.getFont('Sen').fontFamily,
+                                    color: Colors.red,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: const Text('Já sou cadastrado'),
+                          ],
                         ),
                       ],
                     ),

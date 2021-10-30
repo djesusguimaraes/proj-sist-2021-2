@@ -27,11 +27,11 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ModuleRoute('Modular.initialRoute', module: HomeModule()),
+    ModuleRoute(Modular.initialRoute, module: HomeModule()),
     ModuleRoute(RestaurantModule.routeName, module: RestaurantModule()),
     ModuleRoute(CartModule.routeName, module: CartModule()),
     ModuleRoute(AuthModule.routeName, module: AuthModule()),
-    ModuleRoute(Modular.initialRoute, module: RegisterModule()),
+    ModuleRoute(RegisterModule.routeName, module: RegisterModule()),
     ModuleRoute(OrderModule.routeName, module: OrderModule()),
     ChildRoute(PaymentPage.paymentRouteName,
         child: (_, args) => const PaymentPage()),
