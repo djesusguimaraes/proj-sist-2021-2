@@ -1,5 +1,9 @@
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:pscomidas/app/modules/auth/auth_module.dart';
 import 'package:pscomidas/app/modules/register/register_store.dart';
 import 'package:flutter/material.dart';
 import 'package:pscomidas/app/modules/register/widgets/custom_submit_button.dart';
@@ -17,93 +21,173 @@ class RegisterPageState extends State<RegisterPage> {
 
   TextStyle get fontFamily => GoogleFonts.getFont('Sen', fontSize: 16.0);
 
-  TextStyle get digitedText => GoogleFonts.getFont(
-        'Sen',
-        fontSize: 14.0,
-      );
+  TextStyle get digitedText => GoogleFonts.getFont('Sen', fontSize: 14.0);
 
-  final TextEditingController controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool checked = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    store.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.red[900],
-        body: Center(
-          child: Container(
-            width: screen.width * .35,
-            height: screen.height * .97,
-            padding: const EdgeInsets.symmetric(
-              vertical: 20.0,
-              horizontal: 40.0,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 2,
-                  spreadRadius: 2,
-                )
-              ],
-            ),
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Image.asset(
-                      'assets/images/logo.png',
-                      scale: 2.4,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        'Falta pouco para matar sua fome!',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        'Insira seus dados para iniciar o cadastro',
-                        style: fontFamily,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      controller: store.nameController,
-                      title: 'Nome',
-                      hint: 'Insira seu nome completo',
-                    ),
-                    CustomTextField(
-                      controller: store.cpfController,
-                      title: 'CPF',
-                      hint: 'Insira seu CPF',
-                    ),
-                    CustomTextField(
-                      controller: store.bornController,
-                      title: 'Data de Nascimento',
-                      hint: 'Insira sua data de nascimento',
-                    ),
-                    CustomTextField(
-                      controller: store.emailController,
-                      title: 'E-mail',
-                      hint: 'Insira seu email',
-                    ),
-                    CustomTextField(
-                      controller: store.phoneController,
-                      title: 'Telefone com (DDD)',
-                      hint: 'Insira seu telefone',
-                    ),
-                    const SizedBox(height: 10),
-                    const CustomSubmit(label: 'Enviar')
+    return MaterialApp(
+      home: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('register_back.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(
+              child: Container(
+                width: screen.width > 1069
+                    ? screen.width * .35
+                    : screen.width > 750
+                        ? screen.width * .5
+                        : screen.width,
+                padding: const EdgeInsets.all(40.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 2,
+                      spreadRadius: 2,
+                    )
                   ],
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/logo.png',
+                          scale: 2.4,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'Falta pouco para matar sua fome!',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            'Insira seus dados para iniciar o cadastro',
+                            style: fontFamily,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextField(
+                          controller: store.nameController,
+                          title: 'Nome',
+                          hint: 'Insira seu nome completo',
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          controller: store.cpfController,
+                          title: 'CPF',
+                          hint: 'Insira seu CPF',
+                          validator: (value) {
+                            if (!CPFValidator.isValid(value)) {
+                              return 'CPF inválido';
+                            }
+                          },
+                          formaters: [
+                            MaskTextInputFormatter(
+                              mask: '###.###.###-##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          controller: store.emailController,
+                          title: 'E-mail',
+                          hint: 'Insira seu email',
+                          validator: (email) =>
+                              email != null && !EmailValidator.validate(email)
+                                  ? 'E-mail Inválido'
+                                  : null,
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          controller: store.phoneController,
+                          title: 'Telefone com (DDD)',
+                          hint: 'Insira seu telefone',
+                          formaters: [
+                            MaskTextInputFormatter(
+                              mask: '+55 (##) #####-####',
+                              filter: {"#": RegExp(r'[0-9]')},
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Wrap(
+                          children: [
+                            Checkbox(
+                              value: checked,
+                              onChanged: (value) {
+                                setState(() {
+                                  checked = value!;
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 10),
+                            const SizedBox(
+                              child: Text(
+                                "Declaro que li e aceito os termos de uso",
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        CustomSubmit(
+                          label: 'Enviar',
+                          onPressed: () {
+                            if (_formKey.currentState!.validate() &&
+                                checked != false) {
+                              store.register();
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            Modular.to.navigate(AuthModule.routeName);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            textStyle: TextStyle(
+                              color: Colors.red,
+                              fontFamily: GoogleFonts.getFont('Sen').fontFamily,
+                            ),
+                          ),
+                          child: const Text('Já sou cadastrado'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

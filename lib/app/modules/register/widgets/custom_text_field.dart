@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -8,12 +9,14 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.hint,
     required this.controller,
+    this.formaters,
   }) : super(key: key);
 
   final String? title;
   final String? hint;
   final String? Function(String?)? validator;
   final TextEditingController controller;
+  final List<TextInputFormatter>? formaters;
 
   TextStyle get titleStyle =>
       GoogleFonts.getFont('Sen', fontSize: 16.0, fontWeight: FontWeight.bold);
@@ -42,6 +45,7 @@ class CustomTextField extends StatelessWidget {
           ],
           TextFormField(
             style: digitedText,
+            inputFormatters: formaters,
             decoration: InputDecoration(
               border: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black26),

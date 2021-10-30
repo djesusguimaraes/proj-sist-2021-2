@@ -44,4 +44,7 @@ abstract class _RegisterStoreBase with Store {
       errorMessage = e.toString();
     }
   }
+
+  @action
+  void dispose() {}
 }

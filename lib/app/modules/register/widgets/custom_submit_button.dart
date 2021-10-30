@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomSubmit extends StatefulWidget {
-  const CustomSubmit({Key? key, required this.label}) : super(key: key);
+  const CustomSubmit({
+    Key? key,
+    required this.label,
+    required this.onPressed,
+  }) : super(key: key);
   final String label;
+  final Function()? onPressed;
   @override
   _CustomSubmitState createState() => _CustomSubmitState();
 }
@@ -22,7 +27,7 @@ class _CustomSubmitState extends State<CustomSubmit> {
                 fixedSize: const Size.fromHeight(50),
                 primary: Colors.red,
               ),
-              onPressed: () {},
+              onPressed: widget.onPressed,
               child: Text(
                 widget.label,
                 style: digitedText,
