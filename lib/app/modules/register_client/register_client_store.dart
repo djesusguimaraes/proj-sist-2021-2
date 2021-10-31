@@ -28,10 +28,10 @@ abstract class _RegisterStoreBase with Store {
   ConfirmationResult? confirmationResult;
 
   @observable
-  bool? validatorPhone = false;
+  bool? validatorPhone;
 
   @observable
-  String errorPhone = '';
+  String? errorPhone;
 
   @observable
   String? errorMessage;
@@ -78,7 +78,8 @@ abstract class _RegisterStoreBase with Store {
     }
   }
 
-  void goToConfirmPhone() {
+  void goToConfirmPhone() async{
+    await sendVerifyCode();
     Modular.to.navigate(ConfirmPhonePage.routeName);
   }
 

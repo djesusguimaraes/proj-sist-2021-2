@@ -51,7 +51,7 @@ class RegisterClientRepository {
       await confirmationResult?.confirm(code);
       return userCredential?.user != null ? true : false;
     } catch (e) {
-      throw Exception('Código invalido');
+      throw Exception('Código inválido');
     }
   }
 }

@@ -43,13 +43,13 @@ mixin _$RegisterClientStore on _RegisterStoreBase, Store {
   final _$errorPhoneAtom = Atom(name: '_RegisterStoreBase.errorPhone');
 
   @override
-  String get errorPhone {
+  String? get errorPhone {
     _$errorPhoneAtom.reportRead();
     return super.errorPhone;
   }
 
   @override
-  set errorPhone(String value) {
+  set errorPhone(String? value) {
     _$errorPhoneAtom.reportWrite(value, super.errorPhone, () {
       super.errorPhone = value;
     });

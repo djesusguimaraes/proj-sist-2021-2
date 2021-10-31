@@ -75,7 +75,7 @@ class RegisterClientPageState extends State<RegisterClientPage> {
                             'Falta pouco para matar sua fome!',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 24.0,
+                              fontSize: 23.0,
                             ),
                           ),
                         ),
@@ -126,7 +126,7 @@ class RegisterClientPageState extends State<RegisterClientPage> {
                           hint: 'Insira seu telefone',
                           formaters: [
                             MaskTextInputFormatter(
-                              mask: '+44 (##) #####-####',
+                              mask: '+55 (##) #####-####',
                               filter: {"#": RegExp(r'[0-9]')},
                             )
                           ],
@@ -179,10 +179,9 @@ class RegisterClientPageState extends State<RegisterClientPage> {
                         const SizedBox(height: 10),
                         CustomSubmit(
                           label: 'Enviar',
-                          onPressed: () async{
+                          onPressed: () {
                             if (_formKey.currentState!.validate() &&
                                 checked != false) {
-                              await store.sendVerifyCode();
                               store.goToConfirmPhone();
                             }
                           },
