@@ -8,6 +8,7 @@ import 'package:pscomidas/app/modules/home/schemas.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
 import 'package:pscomidas/app/modules/home/store/home_store.dart';
+import 'package:pscomidas/app/modules/register_client/register_client_module.dart';
 
 class LogoAppBar extends StatelessWidget {
   const LogoAppBar({Key? key}) : super(key: key);
@@ -152,6 +153,24 @@ class LocationAppBar extends StatelessWidget {
   }
 }
 
+class RegisterButton extends StatelessWidget {
+  const RegisterButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(
+        Icons.edit_outlined,
+        color: Colors.red,
+        size: 30,
+      ),
+      onPressed: () {
+        Modular.to.navigate(RegisterClientModule.routeName);
+      },
+    );
+  }
+}
+
 class UserAppBar extends StatefulWidget {
   const UserAppBar({Key? key}) : super(key: key);
 
@@ -186,7 +205,7 @@ class _UserAppBarState extends State<UserAppBar> {
             ),
             onPressed: () {
               FirebaseAuth.instance.signOut();
-              Modular.to.pushReplacementNamed(AuthModule.routeName);
+              Modular.to.navigate(AuthModule.routeName);
             },
           );
   }
@@ -337,7 +356,7 @@ class UserProfileOptions {
       padding: const EdgeInsets.all(5.0),
       onTap: () async {
         await FirebaseAuth.instance.signOut();
-        Modular.to.pushNamed(AuthModule.routeName);
+        Modular.to.navigate(AuthModule.routeName);
       },
     ),
   ];

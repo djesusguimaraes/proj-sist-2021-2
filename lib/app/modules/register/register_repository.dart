@@ -6,12 +6,8 @@ class RegisterRepository {
   RegisterRepository(this.auth);
 
   Future verifyNumberForWeb(String phoneNumber) async {
-    return await auth.signInWithPhoneNumber('+55' + phoneNumber,
-        RecaptchaVerifier(
-          onSuccess: () => print('reCAPTCHA Completed!'),
-          onError: (FirebaseAuthException error) => print(error),
-          onExpired: () => print('reCAPTCHA Expired!'),
-        ),
+    return await auth.signInWithPhoneNumber(phoneNumber,
+
     );
   }
 
