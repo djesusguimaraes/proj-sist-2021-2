@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/global/models/enums/filter.dart';
 import 'package:pscomidas/app/modules/auth/auth_module.dart';
+import 'package:pscomidas/app/modules/editdata_client/editdata_module.dart';
 import 'package:pscomidas/app/modules/home/home_page.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 import 'package:flutter/painting.dart';
@@ -338,7 +339,9 @@ class UserProfileOptions {
         icon: Icons.settings_outlined,
       ),
       padding: const EdgeInsets.all(5.0),
-      onTap: () {},
+      onTap: () async {
+        Modular.to.navigate(EditDataClientModule.routeName);
+      },
     ),
     PopupMenuItem(
       child: const ItemMenuHover(
