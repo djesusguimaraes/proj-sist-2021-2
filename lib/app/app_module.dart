@@ -13,7 +13,7 @@ import 'package:pscomidas/app/modules/register_client/register_client_module.dar
 import 'modules/restaurant/restaurant_module.dart';
 import 'package:pscomidas/app/modules/home/home_module.dart';
 import 'package:pscomidas/app/modules/restaurant/restaurant_module.dart';
-import 'modules/editdata_client/editdata_module.dart';
+import 'modules/update_client_data/update_client_data_module.dart';
 import 'modules/auth/auth_module.dart';
 
 class AppModule extends Module {
@@ -36,7 +36,7 @@ class AppModule extends Module {
     ModuleRoute(OrderModule.routeName, module: OrderModule()),
     ChildRoute(PaymentPage.paymentRouteName,
         child: (_, args) => const PaymentPage()),
-    ModuleRoute(EditDataClientModule.routeName, module: EditDataClientModule()),
+    ModuleRoute(ChangeClientDataModule.routeName, module: ChangeClientDataModule()),
     // ModuleRoute(OrderModule.routeName, module: OrderModule()),
   ];
 }
