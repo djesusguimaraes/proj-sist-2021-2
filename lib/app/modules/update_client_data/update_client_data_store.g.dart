@@ -8,8 +8,8 @@ part of 'update_client_data_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$ChangeClientDataStore on _ChangeClientDataStoreBase, Store {
-  final _$valueAtom = Atom(name: '_ChangeClientDataStoreBase.value');
+mixin _$UpdateClientDataStore on _UpdateClientDataStoreBase, Store {
+  final _$valueAtom = Atom(name: '_UpdateClientDataStoreBase.value');
 
   @override
   int get value {
@@ -24,17 +24,17 @@ mixin _$ChangeClientDataStore on _ChangeClientDataStoreBase, Store {
     });
   }
 
-  final _$_ChangeClientDataStoreBaseActionController =
-      ActionController(name: '_ChangeClientDataStoreBase');
+  final _$_UpdateClientDataStoreBaseActionController =
+      ActionController(name: '_UpdateClientDataStoreBase');
 
   @override
   void increment() {
-    final _$actionInfo = _$_ChangeClientDataStoreBaseActionController
-        .startAction(name: '_ChangeClientDataStoreBase.increment');
+    final _$actionInfo = _$_UpdateClientDataStoreBaseActionController
+        .startAction(name: '_UpdateClientDataStoreBase.increment');
     try {
       return super.increment();
     } finally {
-      _$_ChangeClientDataStoreBaseActionController.endAction(_$actionInfo);
+      _$_UpdateClientDataStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 

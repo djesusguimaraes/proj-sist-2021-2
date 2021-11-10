@@ -36,7 +36,7 @@ class AppModule extends Module {
     ModuleRoute(OrderModule.routeName, module: OrderModule()),
     ChildRoute(PaymentPage.paymentRouteName,
         child: (_, args) => const PaymentPage()),
-    ModuleRoute(ChangeClientDataModule.routeName, module: ChangeClientDataModule()),
+    ModuleRoute(UpdateClientDataModule.routeName, module: UpdateClientDataModule()),
     // ModuleRoute(OrderModule.routeName, module: OrderModule()),
   ];
 }

@@ -12,6 +12,7 @@ import 'package:pscomidas/app/modules/home/store/home_store.dart';
 import 'package:pscomidas/app/modules/register_client/register_client_module.dart';
 import 'package:pscomidas/app/modules/update_client_data/update_client_data_module.dart';
 
+
 class LogoAppBar extends StatelessWidget {
   const LogoAppBar({Key? key}) : super(key: key);
 
@@ -145,7 +146,7 @@ class LocationAppBar extends StatelessWidget {
                   Icons.keyboard_arrow_down_sharp,
                   color: secondaryCollor,
                 ),
-                onTap: () {}
+                onTap: () {},
               ),
             ),
           ],
@@ -291,7 +292,7 @@ class UserProfileOptions {
       ),
       padding: const EdgeInsets.all(5.0),
       onTap: () async {
-        Modular.to.navigate(ChangeClientDataModule.routeName);
+        Modular.to.navigate(UpdateClientDataModule.routeName);
       },
     ),
     PopupMenuItem(
