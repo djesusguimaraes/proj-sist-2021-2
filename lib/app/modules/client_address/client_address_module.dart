@@ -1,11 +1,13 @@
-import 'package:pscomidas/app/modules/client_address/clientAddress_Page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pscomidas/app/modules/client_address/client_address_page.dart';
+import 'package:pscomidas/app/modules/client_address/client_address_respository.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 
 class ClientAddressModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.lazySingleton((i) => ClientAddressStore()),
+    Bind.lazySingleton((i) => ClientAddressRepository()),
   ];
 
   @override
