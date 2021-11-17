@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:pscomidas/app/global/widgets/app_bar/custom_app_bar.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_submit_button.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_text_field.dart';
 
@@ -35,93 +36,94 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    return Center(
-      child: Container(
-        width: screen.width > 1069
-            ? screen.width * .35
-            : screen.width > 750
-                ? screen.width * .5
-                : screen.width,
-        padding: const EdgeInsets.all(40.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5.0),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 2,
-              spreadRadius: 2,
-            )
-          ],
-        ),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    'Editar dados',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30.0,
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      body: Center(
+        child: Container(
+          width: screen.width > 1069
+              ? screen.width * .35
+              : screen.width > 750
+                  ? screen.width * .5
+                  : screen.width,
+          padding: const EdgeInsets.all(40.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 2,
+                spreadRadius: 2,
+              )
+            ],
+          ),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      'Editar dados',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Nome Completo',
-                    hintText: 'Insira seu nome completo',
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                    controller: nameController,
+                    title: 'Nome',
+                    hint: 'Insira seu nome completo',
                   ),
-                  //controller: nameController,
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  controller: cpfController,
-                  title: 'CPF',
-                  hint: 'CPF (Opicional)',
-                  validator: (value) {
-                    if (!CPFValidator.isValid(value)) {
-                      return 'CPF inválido';
-                    }
-                  },
-                  formaters: [
-                    MaskTextInputFormatter(
-                      mask: '###.###.###-##',
-                      filter: {"#": RegExp(r'[0-9]')},
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  controller: phoneController,
-                  title: 'Telefone com (DDD)',
-                  hint: 'Insira seu telefone',
-                  formaters: [
-                    MaskTextInputFormatter(
-                      mask: '+## (##) #####-####',
-                      filter: {"#": RegExp(r'[0-9]')},
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  controller: emailController,
-                  title: 'E-mail',
-                  readOnly: true,
-                ),
-                const SizedBox(height: 20),
-                CustomSubmit(
-                  label: 'Confirmar',
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
-                  },
-                ),
-                const SizedBox(height: 10),
-              ],
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                    controller: cpfController,
+                    readOnly: true,
+                    title: 'CPF',
+                    hint: 'CPF (Opcional)',
+                    validator: (value) {
+                      if (!CPFValidator.isValid(value)) {
+                        return 'CPF inválido';
+                      }
+                    },
+                    formaters: [
+                      MaskTextInputFormatter(
+                        mask: '###.###.###-##',
+                        filter: {"#": RegExp(r'[0-9]')},
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                    controller: phoneController,
+                    title: 'Telefone com (DDD)',
+                    hint: 'Insira seu telefone',
+                    formaters: [
+                      MaskTextInputFormatter(
+                        mask: '+## (##) #####-####',
+                        filter: {"#": RegExp(r'[0-9]')},
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                    controller: emailController,
+                    title: 'E-mail',
+                    readOnly: true,
+                  ),
+                  const SizedBox(height: 20),
+                  CustomSubmit(
+                    label: 'Confirmar',
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {}
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
         ),
