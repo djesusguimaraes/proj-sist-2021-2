@@ -1,9 +1,13 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:js/js_util.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/widgets/app_bar/custom_app_bar.dart';
+import 'package:pscomidas/app/modules/home/home_module.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_submit_button.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_text_field.dart';
 
@@ -20,18 +24,58 @@ class UpdateClientDataPage extends StatefulWidget {
 class UpdateClientDataPageState extends State<UpdateClientDataPage> {
   final UpdateClientDataStore store = Modular.get();
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController cpfController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController checkPasswordController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   TextStyle get fontFamily => GoogleFonts.getFont('Sen', fontSize: 16.0);
 
   TextStyle get digitedText => GoogleFonts.getFont('Sen', fontSize: 14.0);
 
   final _formKey = GlobalKey<FormState>();
+  List<ReactionDisposer> disposers = [];
+
+  @override
+  void initState() {
+    disposers.add(
+      reaction(
+        (_) => store.updated == true,
+        (_) => Flushbar(
+          title: 'Ocorreu um erro ao registrar:',
+          icon: const Icon(
+            Icons.sentiment_dissatisfied_outlined,
+            color: Colors.white70,
+          ),
+          message: store.errorMessage,
+          backgroundColor: Colors.red,
+          borderRadius: BorderRadius.circular(10.0),
+          padding: const EdgeInsets.all(20.0),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 100.0,
+            vertical: 10.0,
+          ),
+          animationDuration: const Duration(milliseconds: 500),
+          shouldIconPulse: false,
+          mainButton: TextButton(
+            child: const Text(
+              'Fechar',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              store.errorMessage = null;
+              Navigator.pop(context);
+            },
+          ),
+        ).show(context),
+      ),
+    );
+    store.getClientData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    for (var i in disposers) {
+      i.call();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,16 +118,16 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
-                    controller: nameController,
+                    controller: store.nameController,
                     title: 'Nome',
-                    hint: 'Insira seu nome completo',
+                    hint: 'Insira seu nome',
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
-                    controller: cpfController,
+                    controller: store.cpfController,
                     readOnly: true,
                     title: 'CPF',
-                    hint: 'CPF (Opcional)',
+                    hint: 'Insira seu CPF',
                     validator: (value) {
                       if (!CPFValidator.isValid(value)) {
                         return 'CPF inválido';
@@ -98,7 +142,7 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
-                    controller: phoneController,
+                    controller: store.phoneController,
                     title: 'Telefone com (DDD)',
                     hint: 'Insira seu telefone',
                     formaters: [
@@ -110,15 +154,17 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
-                    controller: emailController,
+                    controller: store.emailController,
                     title: 'E-mail',
-                    readOnly: true,
+                    hint: 'Insira seu email',
                   ),
                   const SizedBox(height: 20),
                   CustomSubmit(
                     label: 'Confirmar',
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        store.updateClientData();
+                      }
                     },
                   ),
                   const SizedBox(height: 10),
