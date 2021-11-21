@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pscomidas/app/global/models/entities/cliente.dart';
-import 'package:pscomidas/app/modules/update_client_data/update_client_data_service.dart';
+
+import 'update_client_data_service.dart';
 
 final userCollection = FirebaseFirestore.instance.collection('users');
 final clientsCollection = FirebaseFirestore.instance.collection('clients');
 final currentUser = FirebaseAuth.instance.currentUser;
 final String uid = currentUser!.uid;
 
-class UpdateClientServiceFirestore extends UpdateClientService {
+class UpdateClientRepository extends UpdateClientService {
   @override
   Future<bool> updateClient(Cliente client) async {
     try {
@@ -23,10 +24,10 @@ class UpdateClientServiceFirestore extends UpdateClientService {
         'cpf': client.cpf,
       });
       currentUser!.updateEmail(client.email);
+      return true;
     } catch (e) {
       throw Exception('Não foi possível atualizar os dados do cliente.');
     }
-    return true;
   }
 
   @override

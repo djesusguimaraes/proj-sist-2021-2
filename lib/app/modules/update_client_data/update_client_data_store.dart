@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/cliente.dart';
-import 'package:pscomidas/app/modules/register_client/pages/confirm_phone/confirm_phone_page.dart';
+import 'package:pscomidas/app/global/repositories/update_client_data/update_client_data_repository.dart';
 import 'package:pscomidas/app/modules/register_client/register_client_repository.dart';
-import 'package:pscomidas/app/modules/update_client_data/update_client_data_service_firestore.dart';
+
+import 'pages/confirm_new_phone_page.dart';
 
 part 'update_client_data_store.g.dart';
 
@@ -14,7 +15,7 @@ class UpdateClientDataStore = _UpdateClientDataStoreBase
 
 abstract class _UpdateClientDataStoreBase with Store {
   final _registerRepository = Modular.get<RegisterClientRepository>();
-  final _updateClientData = Modular.get<UpdateClientServiceFirestore>();
+  final _updateClientData = Modular.get<UpdateClientRepository>();
 
   TextEditingController nameController = TextEditingController();
   TextEditingController cpfController = TextEditingController();
@@ -24,10 +25,6 @@ abstract class _UpdateClientDataStoreBase with Store {
 
   @observable
   ConfirmationResult? confirmationResult;
-
-  @observable
-  bool?
-      hasChanged; //tem que verificar se algum dos controllers foi alterado pra n fazer query no banco sem necessidade (falta implementar essa funcionalidade)
 
   @observable
   bool? validatorPhone;
@@ -69,7 +66,7 @@ abstract class _UpdateClientDataStoreBase with Store {
 
   void goToConfirmPhone() async {
     await sendVerifyCode();
-    Modular.to.navigate(ConfirmPhonePage.routeName);
+    Modular.to.navigate(ConfirmNewPhonePage.routeName);
   }
 
   @action

@@ -3,15 +3,13 @@ import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:js/js_util.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/widgets/app_bar/custom_app_bar.dart';
-import 'package:pscomidas/app/modules/home/home_module.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_submit_button.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_text_field.dart';
 
-import 'update_client_data_store.dart';
+import '../update_client_data_store.dart';
 
 class UpdateClientDataPage extends StatefulWidget {
   final String title;
@@ -24,9 +22,9 @@ class UpdateClientDataPage extends StatefulWidget {
 class UpdateClientDataPageState extends State<UpdateClientDataPage> {
   final UpdateClientDataStore store = Modular.get();
 
-  TextStyle get fontFamily => GoogleFonts.getFont('Sen', fontSize: 16.0);
+  TextStyle get fontFamily => GoogleFonts.getFont('Nunito', fontSize: 16.0);
 
-  TextStyle get digitedText => GoogleFonts.getFont('Sen', fontSize: 14.0);
+  TextStyle get digitedText => GoogleFonts.getFont('Nunito', fontSize: 14.0);
 
   final _formKey = GlobalKey<FormState>();
   List<ReactionDisposer> disposers = [];
@@ -35,7 +33,7 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
   void initState() {
     disposers.add(
       reaction(
-        (_) => store.updated == true,
+        (_) => store.updated,
         (_) => Flushbar(
           title: 'Ocorreu um erro ao registrar:',
           icon: const Icon(

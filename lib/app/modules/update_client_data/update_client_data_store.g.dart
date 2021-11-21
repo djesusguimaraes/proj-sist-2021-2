@@ -56,6 +56,37 @@ mixin _$UpdateClientDataStore on _UpdateClientDataStoreBase, Store {
     });
   }
 
+  final _$errorMessageAtom =
+      Atom(name: '_UpdateClientDataStoreBase.errorMessage');
+
+  @override
+  String? get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String? value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
+  final _$updatedAtom = Atom(name: '_UpdateClientDataStoreBase.updated');
+
+  @override
+  bool get updated {
+    _$updatedAtom.reportRead();
+    return super.updated;
+  }
+
+  @override
+  set updated(bool value) {
+    _$updatedAtom.reportWrite(value, super.updated, () {
+      super.updated = value;
+    });
+  }
+
   final _$sendVerifyCodeAsyncAction =
       AsyncAction('_UpdateClientDataStoreBase.sendVerifyCode');
 
@@ -72,12 +103,30 @@ mixin _$UpdateClientDataStore on _UpdateClientDataStoreBase, Store {
     return _$verifyCodeAsyncAction.run(() => super.verifyCode());
   }
 
+  final _$updateClientDataAsyncAction =
+      AsyncAction('_UpdateClientDataStoreBase.updateClientData');
+
+  @override
+  Future<void> updateClientData() {
+    return _$updateClientDataAsyncAction.run(() => super.updateClientData());
+  }
+
+  final _$getClientDataAsyncAction =
+      AsyncAction('_UpdateClientDataStoreBase.getClientData');
+
+  @override
+  Future<void> getClientData() {
+    return _$getClientDataAsyncAction.run(() => super.getClientData());
+  }
+
   @override
   String toString() {
     return '''
 confirmationResult: ${confirmationResult},
 validatorPhone: ${validatorPhone},
-errorPhone: ${errorPhone}
+errorPhone: ${errorPhone},
+errorMessage: ${errorMessage},
+updated: ${updated}
     ''';
   }
 }
