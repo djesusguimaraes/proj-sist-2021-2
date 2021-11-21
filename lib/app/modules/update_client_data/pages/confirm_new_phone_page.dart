@@ -40,7 +40,7 @@ class _ConfirmNewPhonePageState extends State<ConfirmNewPhonePage> {
       reaction(
         (_) => store.errorPhone != null,
         (_) => Flushbar(
-          title: 'Ocorreu um erro ao registrar:',
+          title: 'Ocorreu um erro ao confirmar o telefone:',
           icon: const Icon(
             Icons.sentiment_dissatisfied_outlined,
             color: Colors.white70,
@@ -70,7 +70,7 @@ class _ConfirmNewPhonePageState extends State<ConfirmNewPhonePage> {
       reaction(
         (_) => store.errorMessage != null,
         (_) => Flushbar(
-          title: 'Ocorreu um erro ao registrar:',
+          title: 'Ocorreu um erro ao confirmar o telefone:',
           icon: const Icon(
             Icons.sentiment_dissatisfied_outlined,
             color: Colors.white70,
@@ -124,16 +124,8 @@ class _ConfirmNewPhonePageState extends State<ConfirmNewPhonePage> {
                     ? screen.width * .5
                     : screen.width,
             padding: const EdgeInsets.all(40.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 2,
-                  spreadRadius: 2,
-                )
-              ],
             ),
             child: Form(
               key: _formKey,
@@ -185,28 +177,6 @@ class _ConfirmNewPhonePageState extends State<ConfirmNewPhonePage> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Modular.to.navigate(AuthModule.routeName);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: const Size.fromHeight(40),
-                              primary: Colors.white,
-                            ),
-                            child: const Text(
-                              'Já sou cadastrado',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),

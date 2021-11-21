@@ -32,8 +32,7 @@ class UpdateClientRepository extends UpdateClientService {
 
   @override
   Future<Cliente> getClientData() async {
-    // ignore: prefer_typing_uninitialized_variables
-    var clientData;
+    late Cliente clientData;
     try {
       var clientCpf = await clientsCollection.doc(uid).get();
       await userCollection.doc(uid).get().then(
@@ -42,6 +41,7 @@ class UpdateClientRepository extends UpdateClientService {
               cpf: clientCpf['cpf'],
               email: value['email'],
               phone: value['phone'],
+              uid: uid,
             ),
           );
       return clientData;

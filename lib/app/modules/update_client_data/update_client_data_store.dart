@@ -38,6 +38,9 @@ abstract class _UpdateClientDataStoreBase with Store {
   @observable
   bool updated = false;
 
+  @observable
+  Cliente? user;
+
   @action
   Future<void> sendVerifyCode() async {
     confirmationResult =
@@ -54,6 +57,7 @@ abstract class _UpdateClientDataStoreBase with Store {
     }
   }
 
+  @action
   Future<void> checkData() async {
     if (await _registerRepository.checkData(
         emailController.text, phoneController.text, cpfController.text)) {
@@ -61,6 +65,14 @@ abstract class _UpdateClientDataStoreBase with Store {
     } else {
       errorMessage =
           'Os dados pertencem a outra conta. Tente fazer login, ou corrigir os dados.';
+    }
+  }
+
+  void redirectUpdate() {
+    if (user!.phone != phoneController.text) {
+      goToConfirmPhone();
+    } else {
+      updateClientData();
     }
   }
 
@@ -80,21 +92,20 @@ abstract class _UpdateClientDataStoreBase with Store {
       );
       updated = await _updateClientData.updateClient(user);
     } catch (e) {
-      throw Exception(
-          'Não foi possível atualizar seus dados. Tente novamente!');
+      errorMessage = e.toString();
     }
   }
 
   @action
   Future<void> getClientData() async {
     try {
-      Cliente user = await _updateClientData.getClientData();
-      nameController.text = user.name;
-      cpfController.text = user.cpf;
-      emailController.text = user.email;
-      phoneController.text = user.phone;
+      user = await _updateClientData.getClientData();
+      nameController.text = user!.name;
+      cpfController.text = user!.cpf;
+      emailController.text = user!.email;
+      phoneController.text = user!.phone;
     } catch (e) {
-      throw Exception('Não foi possível pegar os dados.');
+      errorMessage = e.toString();
     }
   }
 }

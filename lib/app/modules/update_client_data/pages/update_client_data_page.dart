@@ -1,11 +1,13 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/widgets/app_bar/custom_app_bar.dart';
+import 'package:pscomidas/app/modules/home/schemas.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_submit_button.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_text_field.dart';
 
@@ -31,11 +33,15 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
 
   @override
   void initState() {
-    disposers.add(
+    disposers = [
       reaction(
         (_) => store.updated,
+        (_) => Modular.to.navigate('/'),
+      ),
+      reaction(
+        (_) => store.errorMessage != null,
         (_) => Flushbar(
-          title: 'Ocorreu um erro ao registrar:',
+          title: 'Ocorreu um erro ao editar seus dados:',
           icon: const Icon(
             Icons.sentiment_dissatisfied_outlined,
             color: Colors.white70,
@@ -62,7 +68,7 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
           ),
         ).show(context),
       ),
-    );
+    ];
     store.getClientData();
     super.initState();
   }
@@ -88,88 +94,87 @@ class UpdateClientDataPageState extends State<UpdateClientDataPage> {
                   ? screen.width * .5
                   : screen.width,
           padding: const EdgeInsets.all(40.0),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(5.0),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 2,
-                spreadRadius: 2,
-              )
-            ],
           ),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      'Editar dados',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0,
+          child: Observer(builder: (_) {
+            if (store.user == null) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: secondaryCollor,
+                ),
+              );
+            }
+            return Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Editar dados',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30.0,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  CustomTextField(
-                    controller: store.nameController,
-                    title: 'Nome',
-                    hint: 'Insira seu nome',
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextField(
-                    controller: store.cpfController,
-                    readOnly: true,
-                    title: 'CPF',
-                    hint: 'Insira seu CPF',
-                    validator: (value) {
-                      if (!CPFValidator.isValid(value)) {
-                        return 'CPF inválido';
-                      }
-                    },
-                    formaters: [
-                      MaskTextInputFormatter(
-                        mask: '###.###.###-##',
-                        filter: {"#": RegExp(r'[0-9]')},
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextField(
-                    controller: store.phoneController,
-                    title: 'Telefone com (DDD)',
-                    hint: 'Insira seu telefone',
-                    formaters: [
-                      MaskTextInputFormatter(
-                        mask: '+## (##) #####-####',
-                        filter: {"#": RegExp(r'[0-9]')},
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  CustomTextField(
-                    controller: store.emailController,
-                    title: 'E-mail',
-                    hint: 'Insira seu email',
-                  ),
-                  const SizedBox(height: 20),
-                  CustomSubmit(
-                    label: 'Confirmar',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        store.updateClientData();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                ],
+                    const SizedBox(height: 20),
+                    CustomTextField(
+                      controller: store.nameController,
+                      title: 'Nome',
+                      hint: 'Insira seu nome',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Nome completo inválido';
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      controller: store.cpfController,
+                      readOnly: true,
+                      title: 'CPF',
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      controller: store.phoneController,
+                      title: 'Telefone com (DDD)',
+                      hint: 'Insira seu telefone',
+                      formaters: [
+                        MaskTextInputFormatter(
+                          mask: '+## (##) #####-####',
+                          filter: {"#": RegExp(r'[0-9]')},
+                        )
+                      ],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Telefone inválido';
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      controller: store.emailController,
+                      title: 'E-mail',
+                      readOnly: true,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomSubmit(
+                      label: 'Confirmar',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          store.redirectUpdate();
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
-            ),
-          ),
+            );
+          }),
         ),
       ),
     );

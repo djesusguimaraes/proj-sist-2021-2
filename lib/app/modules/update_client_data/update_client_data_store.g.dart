@@ -87,6 +87,21 @@ mixin _$UpdateClientDataStore on _UpdateClientDataStoreBase, Store {
     });
   }
 
+  final _$userAtom = Atom(name: '_UpdateClientDataStoreBase.user');
+
+  @override
+  Cliente? get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(Cliente? value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
   final _$sendVerifyCodeAsyncAction =
       AsyncAction('_UpdateClientDataStoreBase.sendVerifyCode');
 
@@ -101,6 +116,14 @@ mixin _$UpdateClientDataStore on _UpdateClientDataStoreBase, Store {
   @override
   Future<void> verifyCode() {
     return _$verifyCodeAsyncAction.run(() => super.verifyCode());
+  }
+
+  final _$checkDataAsyncAction =
+      AsyncAction('_UpdateClientDataStoreBase.checkData');
+
+  @override
+  Future<void> checkData() {
+    return _$checkDataAsyncAction.run(() => super.checkData());
   }
 
   final _$updateClientDataAsyncAction =
@@ -126,7 +149,8 @@ confirmationResult: ${confirmationResult},
 validatorPhone: ${validatorPhone},
 errorPhone: ${errorPhone},
 errorMessage: ${errorMessage},
-updated: ${updated}
+updated: ${updated},
+user: ${user}
     ''';
   }
 }
