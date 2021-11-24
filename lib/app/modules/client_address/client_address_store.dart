@@ -26,4 +26,8 @@ abstract class _ClientAddressStoreBase with Store {
   Future<void> fetchCEP() async {
     await _repository.fetchCEP(cepController.text);
   }
+
+  Future<void> fetchAddresses() async {
+    await _repository.fetchAddresses();
+  }
 }

@@ -17,6 +17,12 @@ class _SavedAdressesState extends State<SavedAdresses> {
   List test = List.generate(3, (index) => 1);
 
   @override
+  void initState() {
+    store.fetchAddresses();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     return SingleChildScrollView(
