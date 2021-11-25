@@ -65,27 +65,34 @@ class AddressListTile extends StatefulWidget {
 }
 
 class _AddressListTileState extends State<AddressListTile> {
+  bool test = false;
   @override
   Widget build(BuildContext context) {
+    Color highlightColor = test ? primaryCollor : Colors.black;
     return ListTile(
       tileColor: Colors.transparent,
-      title: const Text('Casa'),
+      selected: test,
+      selectedTileColor: Colors.red,
+      title: Text('Casa', style: TextStyle(color: highlightColor),),
       subtitle: Text(widget.address != null
           ? widget.address!.street
-          : "Q. 208 Sul, Alameda 10, 202"),
-      leading: const Icon(
+          : "Q. 208 Sul, Alameda 10, 202", style: TextStyle(color: highlightColor)),
+      leading: Icon(
         Icons.house,
+        color: highlightColor,
       ),
       trailing: widget.trailing
           ? IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_vert,
-                color: tertiaryCollor,
+                color: highlightColor,
               ),
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )
           : null,
-      onTap: widget.onTap ?? () => Slidable.of(context)?.close(),
+      onTap: widget.trailing ? () => Slidable.of(context)?.close(): widget.onTap??() => setState(() {
+       test = !test; 
+      }),
     );
   }
 }

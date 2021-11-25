@@ -56,7 +56,7 @@ class _SearchAddressState extends State<SearchAddress> {
           ),
           ListView.builder(
             itemBuilder: (context, index) {
-              return const AddressListTile();
+              return AddressListTile(onTap: () => Navigator.pop(context),);
             },
             shrinkWrap: true,
             itemCount: test.length,

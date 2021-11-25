@@ -6,7 +6,6 @@ import 'package:pscomidas/app/global/widgets/app_bar/components/user_profile_opt
 import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/auth/auth_module.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_page.dart';
-import 'package:pscomidas/app/modules/home/home_page.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
