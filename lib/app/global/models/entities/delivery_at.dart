@@ -18,4 +18,30 @@ class DeliveryAt {
     this.city = 'Palmas',
     this.uf = 'TO',
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'active': active,
+      'cep': cep,
+      'city': city,
+      'complement': complement,
+      'district': block,
+      'number': number,
+      'street': street,
+      'uf': uf,
+    };
+  }
+
+  static DeliveryAt fromMap(Map<String, dynamic> map) {
+    return DeliveryAt(
+      active: map['active'],
+      cep: map['cep'],
+      city: map['city'],
+      complement: map['complement'],
+      block: map['district'],
+      number: map['number'],
+      street: map['street'],
+      uf: map['uf'],
+    );
+  }
 }
