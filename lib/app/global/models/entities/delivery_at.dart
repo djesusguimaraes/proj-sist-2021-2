@@ -7,6 +7,7 @@ class DeliveryAt {
   final String cep;
   final String city;
   final String uf;
+  late String? id;
 
   DeliveryAt({
     this.active,
@@ -17,6 +18,7 @@ class DeliveryAt {
     required this.cep,
     required this.city,
     required this.uf,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
