@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:pscomidas/app/modules/client_address/widgets/address_list_tile.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
-import 'package:pscomidas/app/modules/register_client/widgets/custom_submit_button.dart';
+import 'package:pscomidas/app/modules/register_client/widgets/custom_submit.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_text_field.dart';
 
 import '../client_address_store.dart';
@@ -39,7 +39,6 @@ class _PickAddressState extends State<PickAddress> {
                 'Busque o endereço pelo CEP',
                 style: TextStyle(fontSize: 20.0),
                 textAlign: TextAlign.right,
-
               ),
             ],
           ),
@@ -47,7 +46,6 @@ class _PickAddressState extends State<PickAddress> {
             controller: store.cepController,
             title: 'CEP',
             hint: '00000-000',
-
             formaters: [
               MaskTextInputFormatter(
                 mask: '#####-###',
