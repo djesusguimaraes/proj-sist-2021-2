@@ -1,22 +1,24 @@
 class DeliveryAt {
-  final String street;
-  final String block;
-  final String complement;
-  final int? number;
+  final bool? active;
+  final String? street;
+  final String? block;
+  final String? complement;
+  final String? number;
   final String cep;
   final String city;
   final String uf;
-  final bool active;
+  late String? id;
 
   DeliveryAt({
     this.active = false,
-    required this.street,
-    required this.block,
-    required this.complement,
-    required this.number,
+    this.street,
+    this.block,
+    this.complement,
+    this.number,
     required this.cep,
     this.city = 'Palmas',
     this.uf = 'TO',
+    this.id,
   });
 
   Map<String, dynamic> toMap() {

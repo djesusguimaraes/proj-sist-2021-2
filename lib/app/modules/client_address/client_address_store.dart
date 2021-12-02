@@ -36,4 +36,8 @@ abstract class _ClientAddressStoreBase with Store {
       errorMessage = e.toString();
     }
   }
+
+  Future<void> fetchAddresses() async {
+    await _repository.fetchAddresses();
+  }
 }
