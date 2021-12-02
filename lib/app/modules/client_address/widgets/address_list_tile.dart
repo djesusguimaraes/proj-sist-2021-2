@@ -73,10 +73,16 @@ class _AddressListTileState extends State<AddressListTile> {
       tileColor: Colors.transparent,
       selected: test,
       selectedTileColor: Colors.red,
-      title: Text('Casa', style: TextStyle(color: highlightColor),),
-      subtitle: Text(widget.address != null
-          ? widget.address!.street
-          : "Q. 208 Sul, Alameda 10, 202", style: TextStyle(color: highlightColor)),
+      title: Text(
+        'Casa',
+        style: TextStyle(color: highlightColor),
+      ),
+      subtitle: Text(
+        widget.address != null
+            ? widget.address!.street!
+            : "Q. 208 Sul, Alameda 10, 202",
+        style: TextStyle(color: highlightColor),
+      ),
       leading: Icon(
         Icons.house,
         color: highlightColor,
@@ -90,9 +96,12 @@ class _AddressListTileState extends State<AddressListTile> {
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )
           : null,
-      onTap: widget.trailing ? () => Slidable.of(context)?.close(): widget.onTap??() => setState(() {
-       test = !test; 
-      }),
+      onTap: widget.trailing
+          ? () => Slidable.of(context)?.close()
+          : widget.onTap ??
+              () => setState(() {
+                    test = !test;
+                  }),
     );
   }
 }
