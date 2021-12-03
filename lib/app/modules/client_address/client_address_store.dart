@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
 import 'package:pscomidas/app/global/repositories/client_address/client_address_repository.dart';
+import 'package:pscomidas/app/global/utils/app_response.dart';
 
 part 'client_address_store.g.dart';
 
@@ -15,29 +16,78 @@ abstract class _ClientAddressStoreBase with Store {
   final cepController = TextEditingController();
 
   @observable
-  ObservableList<DeliveryAt> addresses = ObservableList<DeliveryAt>();
+  AppResponse<ObservableList<DeliveryAt>> addresses =
+      AppResponse<ObservableList<DeliveryAt>>();
 
   @observable
-  DeliveryAt? tempAddress;
+  AppResponse<DeliveryAt> tempAddress = AppResponse<DeliveryAt>();
 
   @observable
   String? errorMessage;
+
+  @observable
+  bool isEditing = false;
 
   void jump(int page) {
     pageController.jumpToPage(page);
   }
 
   @action
-  Future<void> findCEP() async {
-    tempAddress = null;
+  updateAddress({DeliveryAt? address}) async {
+    if (address != null) {
+      tempAddress.body = address;
+    }
     try {
-      tempAddress = await _repository.findCEP(cepController.text);
-    } on Exception catch (e) {
+      await _repository.updateAddress(tempAddress.body!);
+      jump(0);
+    } catch (e) {
       errorMessage = e.toString();
     }
   }
 
-  Future<void> fetchAddresses() async {
-    await _repository.fetchAddresses();
+  @action
+  deleteAddress({required String uid}) async {
+    try {
+      List<String> clientAddresses = [];
+      for (var element in addresses.body!) {
+        if (element.id! != uid) {
+          clientAddresses.add(element.id!);
+        }
+      }
+      await _repository.removeAddress(uid, clientAddresses);
+      addresses.body!.removeWhere((element) => element.id == uid);
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+  }
+
+  @action
+  fetchSavedAddresses() async {
+    addresses = AppResponse.loading();
+    try {
+      final response = await _repository.fetchAddresses();
+      addresses = AppResponse.completed(response.asObservable());
+    } catch (e) {
+      errorMessage = e.toString();
+      addresses = AppResponse.error(errorMessage);
+    }
+  }
+
+  @action
+  findCEP() async {
+    tempAddress = AppResponse.loading();
+    try {
+      final response = await _repository.findCEP(cepController.text);
+      tempAddress = AppResponse.completed(response);
+    } on Exception catch (e) {
+      errorMessage = e.toString();
+      tempAddress = AppResponse.error(errorMessage);
+    }
+  }
+
+  @action
+  disposePick() {
+    cepController.clear();
+    tempAddress.body = null;
   }
 }

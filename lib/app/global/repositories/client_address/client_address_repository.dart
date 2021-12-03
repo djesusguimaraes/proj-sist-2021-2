@@ -14,7 +14,6 @@ class ClientAddressRepository {
       final viaCep = ViaCepSearchCep();
       final infoCepJson =
           await viaCep.searchInfoByCep(cep: cep.replaceAll('-', ''));
-      // print(infoCepJson);
       return infoCepJson.fold(
         (l) => throw l,
         (r) => DeliveryAt(
@@ -35,19 +34,20 @@ class ClientAddressRepository {
   Future<List<DeliveryAt>> fetchAddresses() async {
     late List address;
     List<DeliveryAt> addresses = [];
-    int i = 0;
     try {
       await clientCollection
           .doc(currentUser!.uid)
           .get()
           .then((doc) => address = doc.data()!['address']);
       for (var element in address) {
-        await addressCollection
-            .doc(element)
-            .get()
-            .then((value) => addresses.add(DeliveryAt.fromMap(value.data()!)));
-        addresses[i].id = element;
-        i += 1;
+        await addressCollection.doc(element).get().then(
+              (value) => addresses.add(
+                DeliveryAt.fromMap(
+                  map: value.data()!,
+                  uid: element,
+                ),
+              ),
+            );
       }
       return addresses;
     } catch (e) {
@@ -95,9 +95,15 @@ class ClientAddressRepository {
     }
   }
 
-  Future<void> removeAddress(DeliveryAt address) async {
+  Future<void> removeAddress(String uid, List<String> clientAddresses) async {
     try {
-      await addressCollection.doc(address.id).delete().then(
+      await clientCollection
+          .doc(currentUser!.uid)
+          .update({'address': clientAddresses})
+          .then((value) => log('Endereço atualizado na tabela clients'))
+          .onError((error, stackTrace) => throw stackTrace);
+
+      await addressCollection.doc(uid).delete().then(
           (value) => log('O endereço do usuário foi deletado com sucesso'));
     } catch (e) {
       throw Exception(

@@ -7,9 +7,7 @@ import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 
 class SlidableAddressTile extends StatefulWidget {
-  const SlidableAddressTile({
-    Key? key,
-  }) : super(key: key);
+  const SlidableAddressTile({Key? key, DeliveryAt? address}) : super(key: key);
 
   @override
   _SlidableAddressTileState createState() => _SlidableAddressTileState();
@@ -73,10 +71,15 @@ class _AddressListTileState extends State<AddressListTile> {
       tileColor: Colors.transparent,
       selected: test,
       selectedTileColor: Colors.red,
-      title: Text('Casa', style: TextStyle(color: highlightColor),),
-      subtitle: Text(widget.address != null
-          ? widget.address!.street
-          : "Q. 208 Sul, Alameda 10, 202", style: TextStyle(color: highlightColor)),
+      title: Text(
+        'Casa',
+        style: TextStyle(color: highlightColor),
+      ),
+      subtitle: Text(
+          widget.address != null
+              ? widget.address!.street!
+              : "Q. 208 Sul, Alameda 10, 202",
+          style: TextStyle(color: highlightColor)),
       leading: Icon(
         Icons.house,
         color: highlightColor,
@@ -90,9 +93,12 @@ class _AddressListTileState extends State<AddressListTile> {
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )
           : null,
-      onTap: widget.trailing ? () => Slidable.of(context)?.close(): widget.onTap??() => setState(() {
-       test = !test; 
-      }),
+      onTap: widget.trailing
+          ? () => Slidable.of(context)?.close()
+          : widget.onTap ??
+              () => setState(() {
+                    test = !test;
+                  }),
     );
   }
 }

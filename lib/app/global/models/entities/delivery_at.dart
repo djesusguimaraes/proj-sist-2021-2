@@ -34,8 +34,9 @@ class DeliveryAt {
     };
   }
 
-  static DeliveryAt fromMap(Map<String, dynamic> map) {
+  static DeliveryAt fromMap({required Map<String, dynamic> map, String? uid}) {
     return DeliveryAt(
+      id: uid,
       active: map['active'],
       cep: map['cep'],
       city: map['city'],
