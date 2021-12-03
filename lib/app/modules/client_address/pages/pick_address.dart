@@ -20,6 +20,7 @@ class PickAddress extends StatefulWidget {
 
 class _PickAddressState extends State<PickAddress> {
   final ClientAddressStore store = Modular.get();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -37,69 +38,106 @@ class _PickAddressState extends State<PickAddress> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () => store.jump(1),
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: secondaryCollor,
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () => store.jump(1),
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: secondaryCollor,
+                  ),
                 ),
+                //const SizedBox(width: 50.0),
+                const Expanded(
+                  child: Text(
+                    'Busque o endereço pelo CEP',
+                    style: TextStyle(fontSize: 20.0),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 75,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: CustomTextField(
+                      controller: store.cepController,
+                      hint: '00000-000',
+                      phone: true,
+                      formaters: [
+                        MaskTextInputFormatter(
+                          mask: '#####-###',
+                          filter: {"#": RegExp(r'[0-9]')},
+                        ),
+                      ],
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 8) {
+                          return 'CEP Inválido';
+                        }
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await store.findCEP();
+                      }
+                    },
+                    padding: const EdgeInsets.all(8.0),
+                    hoverColor: Colors.transparent,
+                    iconSize: 25,
+                    splashRadius: 20,
+                    highlightColor: Colors.transparent,
+                    icon: const Icon(
+                      Icons.search_sharp,
+                      color: secondaryCollor,
+                    ),
+                  )
+                ],
               ),
-              //const SizedBox(width: 50.0),
-              const Text(
-                'Busque o endereço pelo CEP',
-                style: TextStyle(fontSize: 20.0),
-                textAlign: TextAlign.right,
-              ),
-            ],
-          ),
-          CustomTextField(
-            controller: store.cepController,
-            title: 'CEP',
-            hint: '00000-000',
-            formaters: [
-              MaskTextInputFormatter(
-                mask: '#####-###',
-                filter: {"#": RegExp(r'[0-9]')},
-              ),
-            ],
-            validator: (value) {
-              if (value == null || value.isEmpty || value.length < 8) {
-                return 'CEP Inválido';
+            ),
+            Observer(builder: (_) {
+              if (store.tempAddress.body == null) {
+                return const WarningListTile(icon: Icons.info_outlined);
               }
-            },
-          ),
-          Observer(builder: (_) {
-            if (store.tempAddress.body == null) {
-              return WarningListTile(onTap: () => store.jump(1));
-            }
 
-            if (store.tempAddress.isLoading) {
-              return const ShimmerLoading(
-                child: AddressListTile(),
+              if (store.tempAddress.isLoading) {
+                return const ShimmerLoading(
+                  child: AddressListTile(),
+                );
+              }
+
+              if (store.tempAddress.hasError) {
+                return WarningListTile(
+                  errorMessage: store.tempAddress.message,
+                  onTap: () => store.jump(1),
+                  icon: Icons.error_outline_rounded,
+                );
+              }
+
+              return AddressListTile(address: store.tempAddress.body);
+            }),
+            Observer(builder: (_) {
+              return CustomSubmit(
+                locked: !store.tempAddress.isCompleted,
+                label: 'Salvar Endereço',
+                onPressed: () async => store.createOrUpdate(),
               );
-            }
-
-            if (store.tempAddress.hasError) {
-              return WarningListTile(
-                errorMessage: store.tempAddress.message,
-                onTap: () => store.jump(1),
-                icon: Icons.error_outline_rounded,
-              );
-            }
-
-            return AddressListTile(address: store.tempAddress.body);
-          }),
-          CustomSubmit(
-            label: 'Buscar CEP',
-            onPressed: () async => store.findCEP(),
-          ),
-        ],
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -127,7 +165,7 @@ class WarningListTile extends StatelessWidget {
         color: hasError ? secondaryCollor : Colors.transparent,
       ),
       child: ListTile(
-        trailing: Icon(
+        leading: Icon(
           icon,
           color: hasError ? Colors.white : tertiaryCollor,
         ),

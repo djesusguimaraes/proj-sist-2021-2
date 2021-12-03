@@ -33,12 +33,13 @@ abstract class _ClientAddressStoreBase with Store {
   }
 
   @action
-  updateAddress({DeliveryAt? address}) async {
-    if (address != null) {
-      tempAddress.body = address;
-    }
+  createOrUpdate({DeliveryAt? address}) async {
     try {
-      await _repository.updateAddress(tempAddress.body!);
+      if (address != null) {
+        await _repository.updateAddress(address);
+      } else {
+        await _repository.createAddress(tempAddress.body!);
+      }
       jump(0);
     } catch (e) {
       errorMessage = e.toString();

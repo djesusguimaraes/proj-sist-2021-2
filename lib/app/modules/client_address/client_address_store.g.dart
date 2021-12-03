@@ -58,9 +58,9 @@ mixin _$ClientAddressStore on _ClientAddressStoreBase, Store {
       AsyncAction('_ClientAddressStoreBase.updateAddress');
 
   @override
-  Future updateAddress({DeliveryAt? address}) {
+  Future createOrUpdate({DeliveryAt? address}) {
     return _$updateAddressAsyncAction
-        .run(() => super.updateAddress(address: address));
+        .run(() => super.createOrUpdate(address: address));
   }
 
   final _$deleteAddressAsyncAction =
