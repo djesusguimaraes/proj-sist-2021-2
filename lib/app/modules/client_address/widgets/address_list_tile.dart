@@ -24,17 +24,17 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
     return Slidable(
       enabled: true,
       startActionPane: ActionPane(
-        extentRatio: 0.15,
+        extentRatio: 0.2,
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            icon: Icons.edit,
+            icon: Icons.edit_outlined,
             backgroundColor: Colors.transparent,
             foregroundColor: secondaryCollor,
             onPressed: (context) {},
           ),
           SlidableAction(
-            icon: Icons.delete,
+            icon: Icons.delete_outline_outlined,
             backgroundColor: Colors.transparent,
             foregroundColor: secondaryCollor,
             onPressed: (context) {},
@@ -72,7 +72,7 @@ class _AddressListTileState extends State<AddressListTile> {
     return ListTile(
       tileColor: Colors.transparent,
       selected: test,
-      selectedTileColor: Colors.red,
+      selectedTileColor: secondaryCollor,
       title: Text(
         'Casa',
         style: TextStyle(color: highlightColor),
@@ -84,14 +84,14 @@ class _AddressListTileState extends State<AddressListTile> {
         style: TextStyle(color: highlightColor),
       ),
       leading: Icon(
-        Icons.house,
-        color: highlightColor,
+        Icons.house_outlined,
+        color: tertiaryCollor,
       ),
       trailing: widget.trailing
           ? IconButton(
               icon: Icon(
-                Icons.more_vert,
-                color: highlightColor,
+                Icons.more_vert_outlined,
+                color: tertiaryCollor,
               ),
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )
