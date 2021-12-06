@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/modules/client_address/widgets/address_list_tile.dart';
 import 'package:pscomidas/app/modules/client_address/widgets/search_textfield.dart';
@@ -56,10 +57,11 @@ class _SearchAddressState extends State<SearchAddress> {
           ),
           ListView.builder(
             itemBuilder: (context, index) {
-              return AddressListTile(onTap: () => Navigator.pop(context),);
+              DeliveryAt address = store.addresses.body![index];
+              return AddressListTile(address: address);
             },
             shrinkWrap: true,
-            itemCount: test.length,
+            itemCount: store.addresses.body!.length,
           ),
           ListTile(
             onTap: () => store.jump(2),

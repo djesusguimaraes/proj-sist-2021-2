@@ -40,14 +40,18 @@ class ClientAddressRepository {
           .get()
           .then((doc) => address = doc.data()!['address']);
       for (var element in address) {
-        await addressCollection.doc(element).get().then(
+        await addressCollection
+            .doc(element)
+            .get()
+            .then(
               (value) => addresses.add(
                 DeliveryAt.fromMap(
                   map: value.data()!,
                   uid: element,
                 ),
               ),
-            );
+            )
+            .onError((error, stackTrace) => print(error));
       }
       return addresses;
     } catch (e) {
