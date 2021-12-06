@@ -60,7 +60,15 @@ class _VerifyScreenState extends State<VerifyScreen> {
         children: const [
           LogoAppBar(),
           Text(
-              'Um link de verificação foi enviado para o seu email.\nPor favor, cheque a sua caixa de entrada!', textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontSize: 20,),)
+              'Um link de verificação foi enviado para o seu email.\nPor favor, cheque a sua caixa de entrada!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              decoration: TextDecoration.none,
+              fontWeight: FontWeight.normal,
+            ),
+          )
         
           ],
       ),
