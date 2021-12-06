@@ -7,9 +7,7 @@ import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 
 class SlidableAddressTile extends StatefulWidget {
-  const SlidableAddressTile({
-    Key? key,
-  }) : super(key: key);
+  const SlidableAddressTile({Key? key, DeliveryAt? address}) : super(key: key);
 
   @override
   _SlidableAddressTileState createState() => _SlidableAddressTileState();
@@ -65,27 +63,42 @@ class AddressListTile extends StatefulWidget {
 }
 
 class _AddressListTileState extends State<AddressListTile> {
+  bool test = false;
   @override
   Widget build(BuildContext context) {
+    Color highlightColor = test ? primaryCollor : Colors.black;
     return ListTile(
       tileColor: Colors.transparent,
-      title: const Text('Casa'),
-      subtitle: Text(widget.address != null
-          ? widget.address!.street
-          : "Q. 208 Sul, Alameda 10, 202"),
-      leading: const Icon(
+      selected: test,
+      selectedTileColor: Colors.red,
+      title: Text(
+        'Casa',
+        style: TextStyle(color: highlightColor),
+      ),
+      subtitle: Text(
+          widget.address != null
+              ? widget.address!.street!
+              : "Q. 208 Sul, Alameda 10, 202",
+          style: TextStyle(color: highlightColor)),
+      leading: Icon(
         Icons.house,
+        color: highlightColor,
       ),
       trailing: widget.trailing
           ? IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_vert,
-                color: tertiaryCollor,
+                color: highlightColor,
               ),
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )
           : null,
-      onTap: widget.onTap ?? () => Slidable.of(context)?.close(),
+      onTap: widget.trailing
+          ? () => Slidable.of(context)?.close()
+          : widget.onTap ??
+              () => setState(() {
+                    test = !test;
+                  }),
     );
   }
 }
