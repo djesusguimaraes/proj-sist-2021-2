@@ -1,7 +1,5 @@
-import 'dart:collection';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz_unsafe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
 import 'package:search_cep/search_cep.dart';
@@ -11,11 +9,23 @@ final addressCollection = FirebaseFirestore.instance.collection('address');
 final currentUser = FirebaseAuth.instance.currentUser;
 
 class ClientAddressRepository {
-  Future<void>? fetchCEP(String cep) async {
+  Future<DeliveryAt> findCEP(String cep) async {
     try {
       final viaCep = ViaCepSearchCep();
-      final infoCepJson = await viaCep.searchInfoByCep(cep: cep);
-      print(infoCepJson);
+      final infoCepJson =
+          await viaCep.searchInfoByCep(cep: cep.replaceAll('-', ''));
+      return infoCepJson.fold(
+        (l) => throw l,
+        (r) => DeliveryAt(
+          street: r.logradouro!,
+          block: r.bairro!,
+          complement: r.complemento!,
+          number: null,
+          cep: cep,
+          city: r.logradouro!,
+          uf: r.uf!,
+        ),
+      );
     } catch (e) {
       throw e.toString();
     }
@@ -24,19 +34,20 @@ class ClientAddressRepository {
   Future<List<DeliveryAt>> fetchAddresses() async {
     late List address;
     List<DeliveryAt> addresses = [];
-    int i = 0;
     try {
       await clientCollection
           .doc(currentUser!.uid)
           .get()
           .then((doc) => address = doc.data()!['address']);
       for (var element in address) {
-        await addressCollection
-            .doc(element)
-            .get()
-            .then((value) => addresses.add(DeliveryAt.fromMap(value.data()!)));
-        addresses[i].id = element;
-        i += 1;
+        await addressCollection.doc(element).get().then(
+              (value) => addresses.add(
+                DeliveryAt.fromMap(
+                  map: value.data()!,
+                  uid: element,
+                ),
+              ),
+            );
       }
       return addresses;
     } catch (e) {
@@ -84,9 +95,15 @@ class ClientAddressRepository {
     }
   }
 
-  Future<void> removeAddress(DeliveryAt address) async {
+  Future<void> removeAddress(String uid, List<String> clientAddresses) async {
     try {
-      await addressCollection.doc(address.id).delete().then(
+      await clientCollection
+          .doc(currentUser!.uid)
+          .update({'address': clientAddresses})
+          .then((value) => log('Endereço atualizado na tabela clients'))
+          .onError((error, stackTrace) => throw stackTrace);
+
+      await addressCollection.doc(uid).delete().then(
           (value) => log('O endereço do usuário foi deletado com sucesso'));
     } catch (e) {
       throw Exception(

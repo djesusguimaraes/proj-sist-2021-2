@@ -6,17 +6,15 @@ import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 
-class AddressListTile extends StatefulWidget {
-  const AddressListTile({
-    Key? key,
-  }) : super(key: key);
+class SlidableAddressTile extends StatefulWidget {
+  const SlidableAddressTile({Key? key, DeliveryAt? address}) : super(key: key);
 
   @override
-  _AddressListTileState createState() => _AddressListTileState();
+  _SlidableAddressTileState createState() => _SlidableAddressTileState();
 }
 
 @observable
-class _AddressListTileState extends State<AddressListTile> {
+class _SlidableAddressTileState extends State<SlidableAddressTile> {
   final ClientAddressStore store = Modular.get();
 
   @override
@@ -41,15 +39,15 @@ class _AddressListTileState extends State<AddressListTile> {
           ),
         ],
       ),
-      child: const MyHouse(
+      child: const AddressListTile(
         trailing: true,
       ),
     );
   }
 }
 
-class MyHouse extends StatefulWidget {
-  const MyHouse({
+class AddressListTile extends StatefulWidget {
+  const AddressListTile({
     Key? key,
     this.onTap,
     this.trailing = false,
@@ -61,29 +59,46 @@ class MyHouse extends StatefulWidget {
   final bool trailing;
 
   @override
-  _MyHouseState createState() => _MyHouseState();
+  _AddressListTileState createState() => _AddressListTileState();
 }
 
-class _MyHouseState extends State<MyHouse> {
+class _AddressListTileState extends State<AddressListTile> {
+  bool test = false;
   @override
   Widget build(BuildContext context) {
+    Color highlightColor = test ? primaryCollor : Colors.black;
     return ListTile(
       tileColor: Colors.transparent,
-      title: const Text('Casa'),
-      subtitle: const Text("Q. 208 Sul, Alameda 10, 202"),
-      leading: const Icon(
+      selected: test,
+      selectedTileColor: Colors.red,
+      title: Text(
+        'Casa',
+        style: TextStyle(color: highlightColor),
+      ),
+      subtitle: Text(
+          widget.address != null
+              ? widget.address!.street!
+              : "Q. 208 Sul, Alameda 10, 202",
+          style: TextStyle(color: highlightColor)),
+      leading: Icon(
         Icons.house,
+        color: highlightColor,
       ),
       trailing: widget.trailing
           ? IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.more_vert,
-                color: tertiaryCollor,
+                color: highlightColor,
               ),
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )
           : null,
-      onTap: widget.onTap ?? () => Slidable.of(context)?.close(),
+      onTap: widget.trailing
+          ? () => Slidable.of(context)?.close()
+          : widget.onTap ??
+              () => setState(() {
+                    test = !test;
+                  }),
     );
   }
 }

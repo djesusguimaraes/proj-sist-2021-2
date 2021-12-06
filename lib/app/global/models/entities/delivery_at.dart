@@ -1,23 +1,23 @@
 class DeliveryAt {
   final bool? active;
-  final String street;
-  final String block;
-  final String complement;
-  final String number;
+  final String? street;
+  final String? block;
+  final String? complement;
+  final String? number;
   final String cep;
   final String city;
   final String uf;
   late String? id;
 
   DeliveryAt({
-    this.active,
-    required this.street,
-    required this.block,
-    required this.complement,
-    required this.number,
+    this.active = false,
+    this.street,
+    this.block,
+    this.complement,
+    this.number,
     required this.cep,
-    required this.city,
-    required this.uf,
+    this.city = 'Palmas',
+    this.uf = 'TO',
     this.id,
   });
 
@@ -34,8 +34,9 @@ class DeliveryAt {
     };
   }
 
-  static DeliveryAt fromMap(Map<String, dynamic> map) {
+  static DeliveryAt fromMap({required Map<String, dynamic> map, String? uid}) {
     return DeliveryAt(
+      id: uid,
       active: map['active'],
       cep: map['cep'],
       city: map['city'],

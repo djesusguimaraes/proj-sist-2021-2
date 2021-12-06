@@ -25,8 +25,8 @@ class _SearchAddressState extends State<SearchAddress> {
       child: Column(
         children: [
           Container(
-            height: screen.height * .3,
-            width: screen.width * .3,
+            height: screen.height * .2,
+            width: screen.width * .2,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.contain,
@@ -56,20 +56,23 @@ class _SearchAddressState extends State<SearchAddress> {
           ),
           ListView.builder(
             itemBuilder: (context, index) {
-              return const MyHouse();
+              return AddressListTile(
+                onTap: () => Navigator.pop(context),
+              );
             },
             shrinkWrap: true,
             itemCount: test.length,
           ),
-          const ListTile(
-            leading: Icon(Icons.map),
-            title: Text(
+          ListTile(
+            onTap: () => store.jump(2),
+            leading: const Icon(Icons.map),
+            title: const Text(
               "Não achei meu endereço",
               style: TextStyle(
                 color: secondaryCollor,
               ),
             ),
-            subtitle: Text("Buscar pelo mapa"),
+            subtitle: const Text("Buscar pelo mapa"),
           ),
         ],
       ),
