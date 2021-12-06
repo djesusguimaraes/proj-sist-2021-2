@@ -90,32 +90,32 @@ class _SavedAdressesState extends State<SavedAdresses> {
         ),
       );
     }
+  }
 
-    Widget fakeSearch() {
-      return Container(
-        height: 55,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          border: Border.all(color: tertiaryCollor),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: ListTile(
-          title: const Text(
-            'Busque endereço e número',
-            style: TextStyle(
-              color: tertiaryCollor,
-              fontSize: 16,
-            ),
+  Widget fakeSearch() {
+    return Container(
+      height: 55,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        border: Border.all(color: tertiaryCollor),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: ListTile(
+        title: const Text(
+          'Busque endereço e número',
+          style: TextStyle(
+            color: tertiaryCollor,
+            fontSize: 16,
           ),
-          leading: const Icon(
-            Icons.search,
-            color: secondaryCollor,
-          ),
-          onTap: () => store.jump(1),
         ),
-      );
-    }
+        leading: const Icon(
+          Icons.search,
+          color: secondaryCollor,
+        ),
+        onTap: () => store.jump(1),
+      ),
+    );
   }
 
   @override
