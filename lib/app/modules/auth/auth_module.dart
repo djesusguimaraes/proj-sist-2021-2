@@ -15,7 +15,7 @@ class AuthModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child: (_, args) => const AuthPage()),
+    ChildRoute('/', child: (_, args) => const VerifyScreen()),
     ChildRoute(VerifyScreen.routeName,
         child: (_, args) => const VerifyScreen()),
   ];
