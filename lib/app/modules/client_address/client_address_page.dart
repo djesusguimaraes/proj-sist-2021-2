@@ -27,7 +27,7 @@ class ClientAddressPageState extends State<ClientAddressPage> {
     return AlertDialog(
       content: SizedBox(
         width: screen.width * .4,
-        height: screen.height * .4,
+        height: screen.height * .5,
         child: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: store.pageController,
