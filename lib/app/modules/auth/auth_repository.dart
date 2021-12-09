@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
 import 'package:pscomidas/app/modules/auth/auth_service.dart';
 
 class AuthRepository extends AuthService {
@@ -9,9 +10,10 @@ class AuthRepository extends AuthService {
 
   AuthRepository(this.auth, {authInstance});
   final userCollection = FirebaseFirestore.instance.collection('users');
+  final clientsCollection = FirebaseFirestore.instance.collection('clients');
 
   @override
-  Future<Map<UserCredential, bool>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       UserCredential user = await auth.signInWithEmailAndPassword(
         email: email,
@@ -21,11 +23,15 @@ class AuthRepository extends AuthService {
       if (!user.user!.emailVerified) {
         user.user!.sendEmailVerification();
       }
-      final bool response = await userCollection
+      final response = await userCollection
           .doc(user.user!.uid)
           .get()
-          .then((value) => value.exists ? value.data()!['isClient'] : false);
-      return {user: response};
+          .then((value) => value.data());
+      return {
+        'user': user,
+        'isClient': response!['isClient'],
+        'delivery_at': response['delivery_at']
+      };
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw e.code;
@@ -33,6 +39,17 @@ class AuthRepository extends AuthService {
         throw Exception('E-mail ou senha incorretos');
       }
       throw Exception('Houve um erro desconhecido ao tentar fazer login.');
+    }
+  }
+
+  @override
+  Future<DeliveryAt> fetchDeliveryAt(String uid) async {
+    try {
+      final response =
+          await clientsCollection.doc(uid).get().then((value) => value.data());
+      return DeliveryAt.fromMap(map: response!);
+    } on Exception catch (e) {
+      throw Exception(e);
     }
   }
 

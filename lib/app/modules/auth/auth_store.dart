@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
 import 'package:pscomidas/app/modules/auth/auth_repository.dart';
 
 part 'auth_store.g.dart';
@@ -17,6 +18,9 @@ abstract class _AuthStoreBase with Store {
 
   @observable
   UserCredential? loggedUser;
+
+  @observable
+  DeliveryAt? currentAddress;
 
   @observable
   String errorMessage = '';
@@ -56,12 +60,14 @@ abstract class _AuthStoreBase with Store {
         emailController.text,
         passwordController.text,
       );
-      loggedUser = response.keys.first;
-      _isClient = response.values.first;
+      loggedUser = response['user'];
+      _isClient = response['isClient'];
       if (!loggedUser!.user!.emailVerified) {
         emailVerified = false;
       } else {
         logged = true;
+        currentAddress =
+            await _authRepository.fetchDeliveryAt(response['delivery_at']);
       }
     } on Exception catch (e) {
       if (e as String == 'user-not-found') {
@@ -77,6 +83,7 @@ abstract class _AuthStoreBase with Store {
     try {
       if (await _authRepository.signInWithFacebook() is UserCredential) {
         logged = true;
+        _isClient = true;
       }
     } catch (e) {
       errorMessage = e.toString();
@@ -98,6 +105,7 @@ abstract class _AuthStoreBase with Store {
     try {
       if (await _authRepository.signInWithGoogle() is UserCredential) {
         logged = true;
+        _isClient = true;
       }
     } catch (e) {
       errorMessage = e.toString();
@@ -107,6 +115,7 @@ abstract class _AuthStoreBase with Store {
   @action
   void dispose() {
     logged = false;
+    _isClient = false;
     errorMessage = '';
     emailController.clear();
     passwordController.clear();
