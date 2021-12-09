@@ -1,3 +1,4 @@
+import 'package:pscomidas/app/global/utils/auth_guard.dart';
 import 'package:pscomidas/app/modules/restaurant_home/pages/avaliations/avaliations_page.dart';
 import 'package:pscomidas/app/modules/restaurant_home/pages/orders/orders_page.dart';
 import 'package:pscomidas/app/modules/restaurant_home/pages/plans/restaurant_plan_page.dart';
@@ -12,6 +13,9 @@ class RestaurantHomeModule extends Module {
   List<ModularRoute> get routes => [
         ChildRoute('/',
             child: (context, args) => const RestaurantHomePage(),
+            guards: [
+              AuthGuard(true)
+            ],
             children: [
               ChildRoute(ProductPage.routeName,
                   child: (context, args) => const ProductPage()),

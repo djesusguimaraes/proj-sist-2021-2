@@ -32,8 +32,8 @@ class AppModule extends Module {
     Bind.singleton((i) => CartStore()),
     Bind.singleton((i) => HomeStore()),
     Bind.singleton((i) => OrderStore(i.get<CartStore>())),
-    Bind.singleton((i) => RestaurantHomeStore()),
-    Bind.singleton((i) => RestaurantRegisterStore()),
+    Bind.lazySingleton((i) => RestaurantHomeStore()),
+    Bind.lazySingleton((i) => RestaurantRegisterStore()),
     Bind.lazySingleton((i) => ClientAddressStore()),
     Bind.singleton((i) => ProductRepository()),
   ];

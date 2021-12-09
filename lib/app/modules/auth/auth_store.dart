@@ -16,6 +16,9 @@ abstract class _AuthStoreBase with Store {
   TextEditingController passwordController = TextEditingController();
 
   @observable
+  UserCredential? loggedUser;
+
+  @observable
   String errorMessage = '';
 
   @observable
@@ -25,22 +28,43 @@ abstract class _AuthStoreBase with Store {
   bool logged = false;
 
   @observable
+  bool _isClient = false;
+
+  @computed
+  Future<bool> get isClient async {
+    if (logged && _isClient) {
+      return _isClient;
+    }
+    return false;
+  }
+
+  @computed
+  Future<bool> get isNotClient async {
+    if (logged && !_isClient) {
+      return true;
+    }
+    return false;
+  }
+
+  @observable
   bool emailVerified = true;
 
   @action
   Future<void> login() async {
     try {
-      if (await _authRepository.login(
-            emailController.text,
-            passwordController.text,
-          ) ==
-          false) {
+      final response = await _authRepository.login(
+        emailController.text,
+        passwordController.text,
+      );
+      loggedUser = response.keys.first;
+      _isClient = response.values.first;
+      if (!loggedUser!.user!.emailVerified) {
         emailVerified = false;
       } else {
         logged = true;
       }
-    } catch (e) {
-      if (e.toString() == 'Exception: O e-mail não foi encontrado') {
+    } on Exception catch (e) {
+      if (e as String == 'user-not-found') {
         emailexiste = false;
       } else {
         errorMessage = e.toString();
