@@ -10,7 +10,7 @@ import 'package:pscomidas/app/global/widgets/app_bar/components/components_app_b
 import 'package:pscomidas/app/modules/auth/auth_module.dart';
 import 'package:flutter/material.dart';
 import 'package:pscomidas/app/modules/client_address/widgets/address_list_tile.dart';
-import 'package:pscomidas/app/modules/home/schemas.dart';
+import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/register_client/register_client_store.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_submit.dart';
 import 'package:pscomidas/app/modules/register_client/widgets/custom_text_field.dart';
@@ -29,8 +29,8 @@ class RegisterClientPageState extends State<RegisterClientPage> {
   TextStyle get fontFamily => GoogleFonts.getFont('Sen', fontSize: 16.0);
 
   TextStyle get digitedText => GoogleFonts.getFont('Sen', fontSize: 14.0);
-
   final _formKey = GlobalKey<FormState>();
+
   List<ReactionDisposer> disposers = [];
   bool checked = false;
 
@@ -283,7 +283,7 @@ class RegisterClientPageState extends State<RegisterClientPage> {
                                   checked = value!;
                                 });
                               },
-                              activeColor: secondaryCollor,
+                              activeColor: secondaryColor,
                             ),
                             const SizedBox(
                               child: Text(
