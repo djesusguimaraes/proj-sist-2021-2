@@ -485,7 +485,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-<<<<<<< HEAD
   google_sign_in:
     dependency: "direct main"
     description:
@@ -507,8 +506,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.0+3"
-=======
->>>>>>> 27c9a62ff3fce5a35c9b773d36e79929db75a295
   graphs:
     dependency: transitive
     description:
@@ -762,20 +759,12 @@ packages:
     source: hosted
     version: "1.1.0"
   rxdart:
-<<<<<<< HEAD
-    dependency: "direct main"
-=======
     dependency: transitive
->>>>>>> 27c9a62ff3fce5a35c9b773d36e79929db75a295
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "0.27.2"
-=======
     version: "0.27.3"
->>>>>>> 27c9a62ff3fce5a35c9b773d36e79929db75a295
   search_cep:
     dependency: "direct main"
     description:
