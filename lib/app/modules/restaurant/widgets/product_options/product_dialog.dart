@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/global/models/entities/item.dart';
@@ -303,14 +302,11 @@ class _ProductDialogState extends State<ProductDialog> {
                         builder: (context) {
                           return AlertDialog(
                             title: const Text(
-                              "Você Editou um item",
+                              "Você editou um item",
                               textAlign: TextAlign.center,
                             ),
-                            content: const Icon(
-                              Icons.add_shopping_cart,
-                              size: 80,
-                              color: Color(0xFF00E676),
-                            ),
+                            content: const Icon(Icons.add_shopping_cart,
+                                size: 80, color: secondaryColor),
                             actions: <Widget>[
                               // define os botões na base do dialogo
                               Center(
