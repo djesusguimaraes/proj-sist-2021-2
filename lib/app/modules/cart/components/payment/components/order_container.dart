@@ -6,7 +6,6 @@ import 'package:pscomidas/app/modules/cart/cart_store.dart';
 import 'package:pscomidas/app/modules/cart/components/drawer/components/comp_header.dart';
 import 'package:pscomidas/app/modules/cart/components/drawer/components/order_resume.dart';
 import 'package:pscomidas/app/modules/cart/components/payment/components/pay_item_builder.dart';
-import 'package:pscomidas/app/modules/home/schemas.dart';
 
 class OrderContainer extends StatelessWidget {
   OrderContainer({Key? key}) : super(key: key);

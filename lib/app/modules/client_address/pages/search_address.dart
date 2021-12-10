@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
+import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/modules/client_address/widgets/address_list_tile.dart';
 import 'package:pscomidas/app/modules/client_address/widgets/search_textfield.dart';
-import 'package:pscomidas/app/modules/home/schemas.dart';
 
 class SearchAddress extends StatefulWidget {
   const SearchAddress({Key? key}) : super(key: key);
@@ -69,7 +69,7 @@ class _SearchAddressState extends State<SearchAddress> {
             title: const Text(
               "Não achei meu endereço",
               style: TextStyle(
-                color: secondaryCollor,
+                color: secondaryColor,
               ),
             ),
             subtitle: const Text("Buscar pelo mapa"),
