@@ -21,75 +21,78 @@ class _SavedAdressesState extends State<SavedAdresses> {
   @override
   void initState() {
     store.fetchSavedAddresses();
-    Widget build(BuildContext context) {
-      Size screen = MediaQuery.of(context).size;
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: screen.height * .2,
-              width: screen.width * .2,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: NetworkImage('https://i.imgur.com/50wsQ3L.jpg'),
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Onde você quer receber seu pedido?",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-            fakeSearch(),
-            const SizedBox(
-              height: 10,
-            ),
-            Observer(builder: (_) {
-              if (!store.addresses.isCompleted) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (store.addresses.hasError) ...[
-                      const Icon(
-                        Icons.error_outline_sharp,
-                        color: secondaryCollor,
-                      )
-                    ] else ...[
-                      const CircularProgressIndicator(color: secondaryCollor),
-                    ],
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        store.addresses.isLoading
-                            ? 'Aguarde enquanto organizamos tudo pra você...'
-                            : 'Tivemos um probleminha pra encontrar seus endereços.',
-                      ),
-                    ),
-                  ],
-                );
-              }
+    super.initState();
+  }
 
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  DeliveryAt address = store.addresses.body![index];
-                  return SlidableAddressTile(address: address);
-                },
-                shrinkWrap: true,
-                itemCount: store.addresses.body!.length,
+  @override
+  Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            height: screen.height * .2,
+            width: screen.width * .2,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.contain,
+                image: NetworkImage('https://i.imgur.com/50wsQ3L.jpg'),
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Onde você quer receber seu pedido?",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          fakeSearch(),
+          const SizedBox(
+            height: 10,
+          ),
+          Observer(builder: (_) {
+            if (!store.addresses.isCompleted) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (store.addresses.hasError) ...[
+                    const Icon(
+                      Icons.error_outline_sharp,
+                      color: secondaryCollor,
+                    )
+                  ] else ...[
+                    const CircularProgressIndicator(color: secondaryCollor),
+                  ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      store.addresses.isLoading
+                          ? 'Aguarde enquanto organizamos tudo pra você...'
+                          : 'Tivemos um probleminha pra encontrar seus endereços.',
+                    ),
+                  ),
+                ],
               );
-            }),
-          ],
-        ),
-      );
-    }
+            }
+
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                DeliveryAt address = store.addresses.body![index];
+                return SlidableAddressTile(address: address);
+              },
+              shrinkWrap: true,
+              itemCount: store.addresses.body!.length,
+            );
+          }),
+        ],
+      ),
+    );
   }
 
   Widget fakeSearch() {
@@ -116,11 +119,5 @@ class _SavedAdressesState extends State<SavedAdresses> {
         onTap: () => store.jump(1),
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }

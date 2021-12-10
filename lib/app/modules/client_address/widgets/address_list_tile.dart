@@ -7,7 +7,9 @@ import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/modules/home/schemas.dart';
 
 class SlidableAddressTile extends StatefulWidget {
-  const SlidableAddressTile({Key? key, DeliveryAt? address}) : super(key: key);
+  final DeliveryAt? address;
+
+  const SlidableAddressTile({Key? key, this.address}) : super(key: key);
 
   @override
   _SlidableAddressTileState createState() => _SlidableAddressTileState();
@@ -39,15 +41,16 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
           ),
         ],
       ),
-      child: const AddressListTile(
+      child: AddressListTile(
         trailing: true,
+        address: widget.address,
       ),
     );
   }
 }
 
 class AddressListTile extends StatefulWidget {
-  const AddressListTile({
+  AddressListTile({
     Key? key,
     this.onTap,
     this.trailing = false,

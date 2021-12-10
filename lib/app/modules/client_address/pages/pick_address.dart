@@ -114,7 +114,7 @@ class _PickAddressState extends State<PickAddress> {
               }
 
               if (store.tempAddress.isLoading) {
-                return const ShimmerLoading(
+                return ShimmerLoading(
                   child: AddressListTile(),
                 );
               }
