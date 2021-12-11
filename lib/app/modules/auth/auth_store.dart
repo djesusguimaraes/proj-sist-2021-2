@@ -53,13 +53,14 @@ abstract class _AuthStoreBase with Store {
       );
       loggedUser = response['user'];
       _isClient = response['isClient'];
-      if (!loggedUser!.user!.emailVerified) {
-        emailVerified = false;
-      } else {
-        logged = true;
+      logged = true;
+      if (_isClient) {
         currentAddress =
             await _authRepository.fetchDeliveryAt(response['delivery_at']);
       }
+      // if (!loggedUser!.user!.emailVerified) {
+      //   emailVerified = false;
+      // } else {}
     } on Exception catch (e) {
       if (e as String == 'user-not-found') {
         emailexiste = false;

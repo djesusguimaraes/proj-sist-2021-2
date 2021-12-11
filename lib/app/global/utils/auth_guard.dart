@@ -3,10 +3,10 @@ import 'package:pscomidas/app/modules/auth/auth_store.dart';
 import 'package:pscomidas/app/modules/home/home_module.dart';
 
 class ClientGuard extends RouteGuard {
-  ClientGuard() : super(redirectTo: HomeModule.routeName);
+  ClientGuard() : super(HomeModule.routeName);
 
   @override
-  Future<bool> canActivate(String path, ModularRoute route) {
+  Future<bool> canActivate(String path, ModularRoute router) {
     return Modular.get<AuthStore>().isClient;
   }
 }

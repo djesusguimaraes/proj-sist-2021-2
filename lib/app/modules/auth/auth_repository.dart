@@ -23,14 +23,20 @@ class AuthRepository extends AuthService {
       if (!user.user!.emailVerified) {
         user.user!.sendEmailVerification();
       }
-      final response = await userCollection
-          .doc(user.user!.uid)
-          .get()
-          .then((value) => value.data());
+      final response =
+          await userCollection.doc(user.user!.uid).get().then((value) async {
+        if (value.data()!['isClient']) {
+          final client = await clientsCollection.doc(user.user!.uid).get();
+          return [
+            value.data()!['isClient'],
+            client['delivery_at'],
+          ];
+        }
+      });
       return {
         'user': user,
-        'isClient': response!['isClient'],
-        'delivery_at': response['delivery_at']
+        'isClient': response!.first,
+        'delivery_at': response.last,
       };
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

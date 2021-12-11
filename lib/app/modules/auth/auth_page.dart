@@ -35,15 +35,15 @@ class AuthPageState extends State<AuthPage> {
             ? RestaurantHomeModule.routeName
             : HomeModule.routeName),
       ),
-      reaction(
-        (_) => store.emailVerified == false,
-        (_) => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const VerifyScreen(),
-          ),
-        ),
-      ),
+      // reaction(
+      //   (_) => store.emailVerified == false,
+      //   (_) => Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => const VerifyScreen(),
+      //     ),
+      //   ),
+      // ),
       reaction(
         (_) => store.emailexiste == false,
         (_) => showDialog(
