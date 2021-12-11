@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/global/models/entities/item.dart';
@@ -138,7 +137,7 @@ class _ProductDialogState extends State<ProductDialog> {
                             const Icon(Icons.store),
                             Expanded(
                               child: Text(
-                                restaurantStore.restaurant!.socialName,
+                                restaurantStore.restaurant.body!.socialName,
                                 style: const TextStyle(fontSize: 15),
                               ),
                             ),
@@ -148,7 +147,7 @@ class _ProductDialogState extends State<ProductDialog> {
                               color: Colors.yellow,
                             ),
                             Text(
-                              restaurantStore.restaurant!.avaliation!
+                              restaurantStore.restaurant.body!.avaliation!
                                   .toStringAsFixed(1),
                               style: const TextStyle(color: Colors.yellow),
                             ),
@@ -169,10 +168,11 @@ class _ProductDialogState extends State<ProductDialog> {
                         Row(
                           children: [
                             Text(
-                              restaurantStore.restaurant!.estimatedDelivery +
+                              restaurantStore
+                                      .restaurant.body!.estimatedDelivery +
                                   ' min - ' +
                                   FormatMoney.doubleToMoney(restaurantStore
-                                      .restaurant!.deliveryPrice),
+                                      .restaurant.body!.deliveryPrice),
                               style: const TextStyle(fontSize: 15),
                             ),
                           ],
