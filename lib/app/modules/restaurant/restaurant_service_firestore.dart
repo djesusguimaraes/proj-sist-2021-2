@@ -26,7 +26,8 @@ class RestaurantServiceFirestore extends RestaurantService {
 
     querySnapshot = await productsCollection
         .where('name', isGreaterThanOrEqualTo: searchTitle)
-        .where('restaurant_id', isEqualTo: restaurantId)
+        // TODO: Implementar Filtro por Restaurante
+        // .where('restaurant_id', isEqualTo: restaurantId)
         .get();
 
     return querySnapshot.docs.map((doc) {
