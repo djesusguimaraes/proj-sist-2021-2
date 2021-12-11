@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
+import 'package:pscomidas/app/global/utils/app_response.dart';
 import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 import 'package:pscomidas/app/global/models/enums/address_type.dart';
@@ -32,6 +33,8 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
             backgroundColor: Colors.transparent,
             foregroundColor: secondaryColor,
             onPressed: (context) {
+              store.isEditing = true;
+              store.tempAddress = AppResponse.completed(widget.address);
               store.jump(2);
             },
           ),
