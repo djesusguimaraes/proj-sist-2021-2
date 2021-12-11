@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
-import 'package:pscomidas/app/modules/home/schemas.dart';
 
 class SearchTextField extends StatefulWidget {
   const SearchTextField({
@@ -11,6 +11,7 @@ class SearchTextField extends StatefulWidget {
     this.iconswap,
     this.hint,
     this.onPressed,
+    this.onChanged,
   }) : super(key: key);
 
   final bool autofocus;
@@ -18,6 +19,7 @@ class SearchTextField extends StatefulWidget {
   final bool? iconswap;
   final String? hint;
   final Function()? onPressed;
+  final Function(String)? onChanged;
 
   @override
   _SearchTextFieldState createState() => _SearchTextFieldState();
@@ -43,7 +45,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
       controller: widget.controller,
       textInputAction: TextInputAction.newline,
       autofocus: widget.autofocus,
-      onChanged: (value) => setState(() {}),
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.grey.shade100,
@@ -60,13 +62,13 @@ class _SearchTextFieldState extends State<SearchTextField> {
               ? IconButton(
                   icon: const Icon(
                     Icons.arrow_back_ios,
-                    color: secondaryCollor,
+                    color: secondaryColor,
                   ),
                   onPressed: () => store.jump(0),
                 )
               : const Icon(
                   Icons.search,
-                  color: secondaryCollor,
+                  color: secondaryColor,
                 ),
         ),
         suffixIcon: Visibility(

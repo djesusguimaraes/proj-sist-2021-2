@@ -3,13 +3,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
+import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
-import 'package:pscomidas/app/modules/home/schemas.dart';
+import 'package:pscomidas/app/global/models/enums/address_type.dart';
 
 class SlidableAddressTile extends StatefulWidget {
-  const SlidableAddressTile({
-    Key? key,
-  }) : super(key: key);
+  const SlidableAddressTile({Key? key, this.address}) : super(key: key);
+  final DeliveryAt? address;
 
   @override
   _SlidableAddressTileState createState() => _SlidableAddressTileState();
@@ -24,25 +24,26 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
     return Slidable(
       enabled: true,
       startActionPane: ActionPane(
-        extentRatio: 0.2,
+        extentRatio: 0.15,
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            icon: Icons.edit_outlined,
+            icon: Icons.edit,
             backgroundColor: Colors.transparent,
-            foregroundColor: secondaryCollor,
+            foregroundColor: secondaryColor,
             onPressed: (context) {},
           ),
           SlidableAction(
-            icon: Icons.delete_outline_outlined,
+            icon: Icons.delete,
             backgroundColor: Colors.transparent,
-            foregroundColor: secondaryCollor,
+            foregroundColor: secondaryColor,
             onPressed: (context) {},
           ),
         ],
       ),
-      child: const AddressListTile(
+      child: AddressListTile(
         trailing: true,
+        address: widget.address,
       ),
     );
   }
@@ -68,30 +69,29 @@ class _AddressListTileState extends State<AddressListTile> {
   bool test = false;
   @override
   Widget build(BuildContext context) {
-    Color highlightColor = test ? primaryCollor : Colors.black;
+    Color highlightColor = test ? primaryColor : Colors.black;
     return ListTile(
       tileColor: Colors.transparent,
       selected: test,
-      selectedTileColor: secondaryCollor,
+      selectedTileColor: Colors.red,
       title: Text(
-        'Casa',
+        widget.address!.tipe!.label,
         style: TextStyle(color: highlightColor),
       ),
       subtitle: Text(
-        widget.address != null
-            ? widget.address!.street!
-            : "Q. 208 Sul, Alameda 10, 202",
-        style: TextStyle(color: highlightColor),
-      ),
+          widget.address != null
+              ? widget.address!.street!
+              : "Q. 208 Sul, Alameda 10, 202",
+          style: TextStyle(color: highlightColor)),
       leading: Icon(
-        Icons.house_outlined,
-        color: tertiaryCollor,
+        widget.address!.tipe!.icon,
+        color: highlightColor,
       ),
       trailing: widget.trailing
           ? IconButton(
               icon: Icon(
-                Icons.more_vert_outlined,
-                color: tertiaryCollor,
+                Icons.more_vert,
+                color: highlightColor,
               ),
               onPressed: () => Slidable.of(context)?.openStartActionPane(),
             )

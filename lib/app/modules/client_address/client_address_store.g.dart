@@ -12,13 +12,13 @@ mixin _$ClientAddressStore on _ClientAddressStoreBase, Store {
   final _$addressesAtom = Atom(name: '_ClientAddressStoreBase.addresses');
 
   @override
-  ObservableList<DeliveryAt> get addresses {
+  AppResponse<ObservableList<DeliveryAt>> get addresses {
     _$addressesAtom.reportRead();
     return super.addresses;
   }
 
   @override
-  set addresses(ObservableList<DeliveryAt> value) {
+  set addresses(AppResponse<ObservableList<DeliveryAt>> value) {
     _$addressesAtom.reportWrite(value, super.addresses, () {
       super.addresses = value;
     });
@@ -27,13 +27,13 @@ mixin _$ClientAddressStore on _ClientAddressStoreBase, Store {
   final _$tempAddressAtom = Atom(name: '_ClientAddressStoreBase.tempAddress');
 
   @override
-  DeliveryAt? get tempAddress {
+  AppResponse<DeliveryAt> get tempAddress {
     _$tempAddressAtom.reportRead();
     return super.tempAddress;
   }
 
   @override
-  set tempAddress(DeliveryAt? value) {
+  set tempAddress(AppResponse<DeliveryAt> value) {
     _$tempAddressAtom.reportWrite(value, super.tempAddress, () {
       super.tempAddress = value;
     });
@@ -54,11 +54,66 @@ mixin _$ClientAddressStore on _ClientAddressStoreBase, Store {
     });
   }
 
+  final _$isEditingAtom = Atom(name: '_ClientAddressStoreBase.isEditing');
+
+  @override
+  bool get isEditing {
+    _$isEditingAtom.reportRead();
+    return super.isEditing;
+  }
+
+  @override
+  set isEditing(bool value) {
+    _$isEditingAtom.reportWrite(value, super.isEditing, () {
+      super.isEditing = value;
+    });
+  }
+
+  final _$createOrUpdateAsyncAction =
+      AsyncAction('_ClientAddressStoreBase.createOrUpdate');
+
+  @override
+  Future createOrUpdate({DeliveryAt? address}) {
+    return _$createOrUpdateAsyncAction
+        .run(() => super.createOrUpdate(address: address));
+  }
+
+  final _$deleteAddressAsyncAction =
+      AsyncAction('_ClientAddressStoreBase.deleteAddress');
+
+  @override
+  Future deleteAddress({required String uid}) {
+    return _$deleteAddressAsyncAction.run(() => super.deleteAddress(uid: uid));
+  }
+
+  final _$fetchSavedAddressesAsyncAction =
+      AsyncAction('_ClientAddressStoreBase.fetchSavedAddresses');
+
+  @override
+  Future fetchSavedAddresses() {
+    return _$fetchSavedAddressesAsyncAction
+        .run(() => super.fetchSavedAddresses());
+  }
+
   final _$findCEPAsyncAction = AsyncAction('_ClientAddressStoreBase.findCEP');
 
   @override
-  Future<void> findCEP() {
+  Future findCEP() {
     return _$findCEPAsyncAction.run(() => super.findCEP());
+  }
+
+  final _$_ClientAddressStoreBaseActionController =
+      ActionController(name: '_ClientAddressStoreBase');
+
+  @override
+  dynamic disposePick() {
+    final _$actionInfo = _$_ClientAddressStoreBaseActionController.startAction(
+        name: '_ClientAddressStoreBase.disposePick');
+    try {
+      return super.disposePick();
+    } finally {
+      _$_ClientAddressStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
@@ -66,7 +121,8 @@ mixin _$ClientAddressStore on _ClientAddressStoreBase, Store {
     return '''
 addresses: ${addresses},
 tempAddress: ${tempAddress},
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+isEditing: ${isEditing}
     ''';
   }
 }

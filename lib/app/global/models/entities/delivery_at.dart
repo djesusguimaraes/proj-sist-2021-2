@@ -1,13 +1,16 @@
+import 'package:pscomidas/app/global/models/enums/address_type.dart';
+
 class DeliveryAt {
   final bool? active;
   final String? street;
   final String? block;
   final String? complement;
-  final String? number;
+  final int? number;
   final String cep;
   final String city;
   final String uf;
   late String? id;
+  final FilterAddressType? tipe;
 
   DeliveryAt({
     this.active = false,
@@ -19,6 +22,7 @@ class DeliveryAt {
     this.city = 'Palmas',
     this.uf = 'TO',
     this.id,
+    this.tipe,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,19 +35,21 @@ class DeliveryAt {
       'number': number,
       'street': street,
       'uf': uf,
+      'tipe': FilterAddressType.casa.label.toLowerCase(),
     };
   }
 
-  static DeliveryAt fromMap(Map<String, dynamic> map) {
+  static DeliveryAt fromMap({required Map<String, dynamic> map, String? uid}) {
     return DeliveryAt(
-      active: map['active'],
-      cep: map['cep'],
-      city: map['city'],
-      complement: map['complement'],
-      block: map['district'],
-      number: map['number'],
-      street: map['street'],
-      uf: map['uf'],
-    );
+        id: uid,
+        active: map['active'],
+        cep: map['cep'],
+        city: map['city'],
+        complement: map['complement'],
+        block: map['district'],
+        number: map['number'],
+        street: map['street'],
+        uf: map['uf'],
+        tipe: FilterAddressType.values.first.stringTotype(map['tipe']));
   }
 }
