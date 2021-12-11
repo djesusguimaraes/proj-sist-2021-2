@@ -148,8 +148,7 @@ class _ProductDialogState extends State<ProductDialog> {
                             const Padding(padding: EdgeInsets.all(3.0)),
                             Expanded(
                               child: Text(
-                                restaurantStore.restaurant!.socialName,
-                                textAlign: TextAlign.justify,
+                                restaurantStore.restaurant.body!.socialName,
                                 style: const TextStyle(fontSize: 15),
                               ),
                             ),
@@ -160,7 +159,7 @@ class _ProductDialogState extends State<ProductDialog> {
                             ),
                             const Padding(padding: EdgeInsets.all(2.0)),
                             Text(
-                              restaurantStore.restaurant!.avaliation!
+                              restaurantStore.restaurant.body!.avaliation!
                                   .toStringAsFixed(1),
                               style: const TextStyle(
                                 color: Color(0XFFe8a44c),
@@ -183,10 +182,11 @@ class _ProductDialogState extends State<ProductDialog> {
                         Row(
                           children: [
                             Text(
-                              restaurantStore.restaurant!.estimatedDelivery +
+                              restaurantStore
+                                      .restaurant.body!.estimatedDelivery +
                                   ' min - ' +
                                   FormatMoney.doubleToMoney(restaurantStore
-                                      .restaurant!.deliveryPrice),
+                                      .restaurant.body!.deliveryPrice),
                               style: const TextStyle(fontSize: 15),
                             ),
                           ],
