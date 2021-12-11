@@ -7,7 +7,9 @@ import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
 
 class SlidableAddressTile extends StatefulWidget {
-  const SlidableAddressTile({Key? key, DeliveryAt? address}) : super(key: key);
+  DeliveryAt? address;
+
+  SlidableAddressTile({Key? key, this.address}) : super(key: key);
 
   @override
   _SlidableAddressTileState createState() => _SlidableAddressTileState();
@@ -29,13 +31,60 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
             icon: Icons.edit,
             backgroundColor: Colors.transparent,
             foregroundColor: secondaryColor,
-            onPressed: (context) {},
+            onPressed: (context) {
+              store.jump(2);
+            },
           ),
           SlidableAction(
             icon: Icons.delete,
             backgroundColor: Colors.transparent,
             foregroundColor: secondaryColor,
-            onPressed: (context) {},
+            onPressed: (context) => AlertDialog(
+              title: const Text(
+                'Você está prestes a deletar um de seus endereços salvos',
+                style: TextStyle(color: Colors.red),
+              ),
+              content:
+                  const Text('Tem certeza que deseja apagar este endereço'),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Cancelar',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 15,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: const Size.fromHeight(30),
+                    primary: Colors.white,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    store
+                        .deleteAddress(uid: widget.address!.id!)
+                        .then((value) => Navigator.pop(context));
+                  },
+                  child: const Text(
+                    'Apagar',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 15,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: const Size.fromHeight(30),
+                    primary: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
