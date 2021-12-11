@@ -2,18 +2,10 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:pscomidas/app/global/models/entities/item.dart';
-import 'package:pscomidas/app/global/models/entities/product.dart';
-import 'package:pscomidas/app/global/utils/format_money.dart';
-import 'package:pscomidas/app/modules/cart/cart_store.dart';
-import 'package:pscomidas/app/modules/home/schemas.dart';
-import 'package:pscomidas/app/modules/register_client/widgets/custom_submit_button.dart';
-import 'package:pscomidas/app/modules/restaurant/restaurant_store.dart';
+import 'package:pscomidas/app/global/utils/schemas.dart';
+import 'package:pscomidas/app/modules/register_client/widgets/custom_submit.dart';
 import 'package:flutter/material.dart';
-import 'package:pscomidas/app/modules/restaurant/widgets/product_options/product_store.dart';
-
 import '../client_address_store.dart';
 
 class AddressNumber extends StatefulWidget {
@@ -40,19 +32,7 @@ final ClientAddressStore store = Modular.get();
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    //bool _value = true;
-    
-
-   /* String? numberValidator(String value) {
-      if(value == null) {
-        return null;
-      }
-      final n = num.tryParse(value);
-      if(n == null) {
-        return '"$value" is not a valid number';
-      }
-      return null;
-    }*/
+   
    return 
    Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -63,10 +43,9 @@ final ClientAddressStore store = Modular.get();
                 onPressed: () => store.jump(2),
                 icon: const Icon(
                   Icons.arrow_back_ios,
-                  color: secondaryCollor,
+                  color: secondaryColor,
                 ),
               ),
-              //const SizedBox(width: 50.0),
               const Expanded(
                 child:  Text(
                   'Você não informou o número de endereço',
@@ -108,7 +87,3 @@ final ClientAddressStore store = Modular.get();
         );
   }
 }
-/* Checkbox(
-                  value: _value,
-                  onChanged: (value){setState((){ _value = value?? true;});},
-                )*/
