@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/global/repositories/products/product_repository.dart';
+import 'package:pscomidas/app/global/utils/auth_guard.dart';
 import 'package:pscomidas/app/modules/auth/auth_module.dart';
 import 'package:pscomidas/app/modules/auth/auth_repository.dart';
 import 'package:pscomidas/app/modules/cart/cart_module.dart';
@@ -45,13 +46,13 @@ class AppModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ModuleRoute(Modular.initialRoute, module: HomeModule()),
+    ModuleRoute(RestaurantHomeModule.routeName, module: RestaurantHomeModule()),
     ModuleRoute(RestaurantModule.routeName, module: RestaurantModule()),
     ModuleRoute(CartModule.routeName, module: CartModule()),
     ModuleRoute(RestaurantRegisterModule.routeName,
         module: RestaurantRegisterModule()),
     ModuleRoute(AuthModule.routeName, module: AuthModule()),
     ModuleRoute(RegisterClientModule.routeName, module: RegisterClientModule()),
-    ModuleRoute(RestaurantHomeModule.routeName, module: RestaurantHomeModule()),
     ChildRoute(PaymentPage.paymentRouteName,
         child: (_, args) => const PaymentPage()),
     ModuleRoute(OrderModule.routeName, module: OrderModule()),

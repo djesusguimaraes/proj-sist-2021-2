@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
@@ -35,20 +36,10 @@ abstract class _AuthStoreBase with Store {
   bool _isClient = false;
 
   @computed
-  Future<bool> get isClient async {
-    if (logged && _isClient) {
-      return _isClient;
-    }
-    return false;
-  }
+  Future<bool> get isClient async => !_isClient;
 
   @computed
-  Future<bool> get isNotClient async {
-    if (logged && !_isClient) {
-      return true;
-    }
-    return false;
-  }
+  bool get client => _isClient;
 
   @observable
   bool emailVerified = true;

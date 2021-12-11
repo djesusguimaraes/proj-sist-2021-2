@@ -19,9 +19,7 @@ class UpdateClientDataModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/',
-        child: (_, args) => const UpdateClientDataPage(),
-        guards: [AuthGuard(false)]),
+    ChildRoute('/', child: (_, args) => const UpdateClientDataPage()),
     ChildRoute(ConfirmNewPhonePage.routeName,
         child: (_, args) => const ConfirmNewPhonePage()),
   ];

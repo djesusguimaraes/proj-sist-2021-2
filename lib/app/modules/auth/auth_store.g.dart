@@ -16,13 +16,12 @@ mixin _$AuthStore on _AuthStoreBase, Store {
       (_$isClientComputed ??= Computed<Future<bool>>(() => super.isClient,
               name: '_AuthStoreBase.isClient'))
           .value;
-  Computed<Future<bool>>? _$isNotClientComputed;
+  Computed<bool>? _$clientComputed;
 
   @override
-  Future<bool> get isNotClient =>
-      (_$isNotClientComputed ??= Computed<Future<bool>>(() => super.isNotClient,
-              name: '_AuthStoreBase.isNotClient'))
-          .value;
+  bool get client => (_$clientComputed ??=
+          Computed<bool>(() => super.client, name: '_AuthStoreBase.client'))
+      .value;
 
   final _$loggedUserAtom = Atom(name: '_AuthStoreBase.loggedUser');
 
@@ -36,6 +35,21 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   set loggedUser(UserCredential? value) {
     _$loggedUserAtom.reportWrite(value, super.loggedUser, () {
       super.loggedUser = value;
+    });
+  }
+
+  final _$currentAddressAtom = Atom(name: '_AuthStoreBase.currentAddress');
+
+  @override
+  DeliveryAt? get currentAddress {
+    _$currentAddressAtom.reportRead();
+    return super.currentAddress;
+  }
+
+  @override
+  set currentAddress(DeliveryAt? value) {
+    _$currentAddressAtom.reportWrite(value, super.currentAddress, () {
+      super.currentAddress = value;
     });
   }
 
@@ -162,12 +176,13 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   String toString() {
     return '''
 loggedUser: ${loggedUser},
+currentAddress: ${currentAddress},
 errorMessage: ${errorMessage},
 emailexiste: ${emailexiste},
 logged: ${logged},
 emailVerified: ${emailVerified},
 isClient: ${isClient},
-isNotClient: ${isNotClient}
+client: ${client}
     ''';
   }
 }

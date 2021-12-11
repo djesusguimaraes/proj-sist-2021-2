@@ -15,8 +15,7 @@ class OrderModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/',
-        child: (_, args) => const OrderPage(), guards: [AuthGuard(false)]),
+    ChildRoute('/', child: (_, args) => const OrderPage()),
     ChildRoute(TrackPage.trackRouteName, child: (_, args) => const TrackPage()),
   ];
 }

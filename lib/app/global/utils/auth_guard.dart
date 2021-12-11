@@ -1,14 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pscomidas/app/modules/auth/auth_store.dart';
+import 'package:pscomidas/app/modules/home/home_module.dart';
 
-class AuthGuard extends RouteGuard {
-  AuthGuard(this.notClient) : super('/login');
-  final bool notClient;
+class ClientGuard extends RouteGuard {
+  ClientGuard() : super(redirectTo: HomeModule.routeName);
 
   @override
-  Future<bool> canActivate(String path, ModularRoute router) {
-    return notClient
-        ? Modular.get<AuthStore>().isNotClient
-        : Modular.get<AuthStore>().isClient;
+  Future<bool> canActivate(String path, ModularRoute route) {
+    return Modular.get<AuthStore>().isClient;
   }
 }

@@ -13,8 +13,7 @@ class CartModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/',
-        child: (_, args) => const CartPage(), guards: [AuthGuard(false)]),
+    ChildRoute('/', child: (_, args) => const CartPage()),
     ChildRoute(PaymentPage.paymentRouteName,
         child: (_, args) => const PaymentPage())
   ];

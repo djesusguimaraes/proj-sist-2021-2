@@ -14,7 +14,7 @@ class RestaurantHomeModule extends Module {
         ChildRoute('/',
             child: (context, args) => const RestaurantHomePage(),
             guards: [
-              AuthGuard(true)
+              ClientGuard()
             ],
             children: [
               ChildRoute(ProductPage.routeName,

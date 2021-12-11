@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pscomidas/app/global/utils/auth_guard.dart';
 import 'package:pscomidas/app/global/widgets/not_found/not_found_page.dart';
 import 'package:pscomidas/app/modules/home/home_page.dart';
 import 'package:pscomidas/app/modules/home/pages/mobile_search_page.dart';
