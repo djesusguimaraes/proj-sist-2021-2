@@ -71,6 +71,14 @@ abstract class _ClientAddressStoreBase with Store {
     }
   }
 
+  setDeliveryAt(String uid) async {
+    try {
+      await _repository.updateCurrentAddress(uid);
+    } catch (e) {
+      errorMessage = e.toString();
+    }
+  }
+
   @action
   findAdress() async {
     filtListAddress.clear();
@@ -98,14 +106,6 @@ abstract class _ClientAddressStoreBase with Store {
         }
         vadress.clear();
       }
-    }
-  }
-
-  setDeliveryAt(String uid) async {
-    try {
-      await _repository.updateCurrentAddress(uid);
-    } catch (e) {
-      errorMessage = e.toString();
     }
   }
 
