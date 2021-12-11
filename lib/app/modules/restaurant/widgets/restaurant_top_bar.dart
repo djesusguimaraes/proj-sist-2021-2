@@ -45,8 +45,8 @@ class _RestaurantTopBarState extends State<RestaurantTopBar> {
                   backgroundImage: NetworkImage(restaurant.image),
                 ),
                 const SizedBox(width: 20),
-                SizedBox(
-                  width: screen.width * .3,
+                Flexible(
+                  flex: 3,
                   child: Text(
                     restaurant.socialName,
                     overflow: TextOverflow.ellipsis,
