@@ -1,5 +1,3 @@
-// ignore: avoid_web_libraries_in_flutter
-
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
