@@ -28,6 +28,7 @@ class _PickAddressState extends State<PickAddress> {
 
   @override
   void dispose() {
+    store.isEditing = false;
     store.disposePick();
     super.dispose();
   }

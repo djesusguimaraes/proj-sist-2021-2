@@ -3,14 +3,15 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
+import 'package:pscomidas/app/global/models/enums/address_type.dart';
 import 'package:pscomidas/app/global/utils/app_response.dart';
 import 'package:pscomidas/app/global/utils/schemas.dart';
 import 'package:pscomidas/app/modules/client_address/client_address_store.dart';
-import 'package:pscomidas/app/global/models/enums/address_type.dart';
 
 class SlidableAddressTile extends StatefulWidget {
-  const SlidableAddressTile({Key? key, this.address}) : super(key: key);
   final DeliveryAt? address;
+
+  const SlidableAddressTile({Key? key, this.address}) : super(key: key);
 
   @override
   _SlidableAddressTileState createState() => _SlidableAddressTileState();
@@ -19,75 +20,14 @@ class SlidableAddressTile extends StatefulWidget {
 @observable
 class _SlidableAddressTileState extends State<SlidableAddressTile> {
   final ClientAddressStore store = Modular.get();
-  List<ReactionDisposer> disposers = [];
 
   @override
   void initState() {
-    disposers = [
-      reaction(
-        (_) => store.deleteIt = true,
-        (_) => showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text(
-                'Você está prestes a deletar um de seus endereços salvos',
-                style: TextStyle(color: Colors.red),
-              ),
-              content:
-                  const Text('Tem certeza que deseja apagar este endereço'),
-              actions: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Cancelar',
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 15,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size.fromHeight(30),
-                    primary: Colors.white,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    store
-                        .deleteAddress(uid: widget.address!.id!)
-                        .then((value) => Navigator.pop(context));
-                  },
-                  child: const Text(
-                    'Apagar',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 15,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size.fromHeight(30),
-                    primary: Colors.white,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-    ];
-    WidgetsFlutterBinding.ensureInitialized();
     super.initState();
   }
 
   @override
   void dispose() {
-    for (var element in disposers) {
-      element.call();
-    }
     super.dispose();
   }
 
@@ -110,10 +50,61 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
             },
           ),
           SlidableAction(
-              icon: Icons.delete,
-              backgroundColor: Colors.transparent,
-              foregroundColor: secondaryColor,
-              onPressed: (_) => store.deleteIt = true),
+            icon: Icons.delete,
+            backgroundColor: Colors.transparent,
+            foregroundColor: secondaryColor,
+            onPressed: (context) => showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text(
+                    'Você está prestes a deletar um de seus endereços salvos',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  content:
+                      const Text('Tem certeza que deseja apagar este endereço'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 15,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size.fromHeight(30),
+                        primary: Colors.white,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        store
+                            .deleteAddress(uid: widget.address!.id!)
+                            .then((value) => Navigator.pop(context));
+                      },
+                      child: const Text(
+                        'Apagar',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 15,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size.fromHeight(30),
+                        primary: Colors.white,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
         ],
       ),
       child: AddressListTile(
@@ -150,7 +141,7 @@ class _AddressListTileState extends State<AddressListTile> {
       selected: test,
       selectedTileColor: Colors.red,
       title: Text(
-        widget.address!.tipe!.label,
+        'Outro', //widget.address!.tipe!.label,
         style: TextStyle(color: highlightColor),
       ),
       subtitle: Text(
@@ -159,7 +150,7 @@ class _AddressListTileState extends State<AddressListTile> {
               : "Q. 208 Sul, Alameda 10, 202",
           style: TextStyle(color: highlightColor)),
       leading: Icon(
-        widget.address!.tipe!.icon,
+        Icons.location_on_outlined, //widget.address!.tipe!.icon,
         color: highlightColor,
       ),
       trailing: widget.trailing

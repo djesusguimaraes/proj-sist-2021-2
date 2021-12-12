@@ -14,7 +14,6 @@ class ClientAddressStore = _ClientAddressStoreBase with _$ClientAddressStore;
 abstract class _ClientAddressStoreBase with Store {
   final _repository = ClientAddressRepository();
   final pageController = PageController(initialPage: 0);
-
   final textController = TextEditingController();
   final cepController = TextEditingController();
 
@@ -47,8 +46,9 @@ abstract class _ClientAddressStoreBase with Store {
   @action
   createOrUpdate({DeliveryAt? address}) async {
     try {
-      if (address != null) {
-        await _repository.updateAddress(address);
+      if (isEditing == true) {
+        await _repository.updateAddress(tempAddress.body!);
+        await fetchSavedAddresses();
       } else {
         await _repository.createAddress(tempAddress.body!);
       }
@@ -69,6 +69,7 @@ abstract class _ClientAddressStoreBase with Store {
       }
       await _repository.removeAddress(uid, clientAddresses);
       addresses.body!.removeWhere((element) => element.id == uid);
+      await fetchSavedAddresses();
     } catch (e) {
       errorMessage = e.toString();
     }
@@ -126,9 +127,10 @@ abstract class _ClientAddressStoreBase with Store {
 
   @action
   findCEP() async {
+    String? id = tempAddress.body == null ? null : tempAddress.body!.id;
     tempAddress = AppResponse.loading();
     try {
-      final response = await _repository.findCEP(cepController.text);
+      final response = await _repository.findCEP(cepController.text, id);
       tempAddress = AppResponse.completed(response);
     } on Exception catch (e) {
       errorMessage = e.toString();
