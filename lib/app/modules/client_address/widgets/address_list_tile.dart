@@ -141,7 +141,7 @@ class _AddressListTileState extends State<AddressListTile> {
       selected: test,
       selectedTileColor: Colors.red,
       title: Text(
-        'Outro', //widget.address!.tipe!.label,
+        widget.address!.addressType!.label,
         style: TextStyle(color: highlightColor),
       ),
       subtitle: Text(
@@ -150,7 +150,7 @@ class _AddressListTileState extends State<AddressListTile> {
               : "Q. 208 Sul, Alameda 10, 202",
           style: TextStyle(color: highlightColor)),
       leading: Icon(
-        Icons.location_on_outlined, //widget.address!.tipe!.icon,
+        widget.address!.addressType!.icon,
         color: highlightColor,
       ),
       trailing: widget.trailing
