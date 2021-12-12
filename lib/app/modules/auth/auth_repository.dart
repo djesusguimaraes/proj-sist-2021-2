@@ -31,12 +31,14 @@ class AuthRepository extends AuthService {
             value.data()!['isClient'],
             client['delivery_at'],
           ];
+        } else {
+          return [value.data()!['isClient'], null];
         }
       });
       return {
         'user': user,
-        'isClient': response!.first,
-        'delivery_at': response.last,
+        'isClient': response.first,
+        'delivery_at': response.last ?? '',
       };
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

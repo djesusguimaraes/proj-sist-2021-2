@@ -10,7 +10,7 @@ class DeliveryAt {
   final String city;
   final String uf;
   late String? id;
-  final FilterAddressType? address_type;
+  final FilterAddressType? addressType;
 
   DeliveryAt({
     this.active = false,
@@ -22,7 +22,7 @@ class DeliveryAt {
     this.city = 'Palmas',
     this.uf = 'TO',
     this.id,
-    this.address_type,
+    this.addressType,
   });
 
   Map<String, dynamic> toMap() {
@@ -35,7 +35,7 @@ class DeliveryAt {
       'number': number,
       'street': street,
       'uf': uf,
-      'address_type': FilterAddressType.casa.label.toLowerCase(),
+      'addressType': FilterAddressType.casa.label.toLowerCase(),
     };
   }
 
@@ -50,7 +50,7 @@ class DeliveryAt {
         number: map['number'],
         street: map['street'],
         uf: map['uf'],
-        address_type:
-            FilterAddressType.values.first.stringTotype(map['address_type']));
+        addressType:
+            FilterAddressType.values.first.stringTotype(map['addressType']));
   }
 }

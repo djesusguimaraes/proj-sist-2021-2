@@ -31,19 +31,19 @@ class AuthPageState extends State<AuthPage> {
     disposers = [
       reaction(
         (_) => store.logged == true,
-        (_) => Modular.to.navigate(store.client
+        (_) => Modular.to.navigate(!store.client
             ? RestaurantHomeModule.routeName
             : HomeModule.routeName),
       ),
-      // reaction(
-      //   (_) => store.emailVerified == false,
-      //   (_) => Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => const VerifyScreen(),
-      //     ),
-      //   ),
-      // ),
+      reaction(
+        (_) => store.emailVerified == false,
+        (_) => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const VerifyScreen(),
+          ),
+        ),
+      ),
       reaction(
         (_) => store.emailexiste == false,
         (_) => showDialog(

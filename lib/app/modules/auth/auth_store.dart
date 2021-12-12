@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
@@ -53,14 +52,15 @@ abstract class _AuthStoreBase with Store {
       );
       loggedUser = response['user'];
       _isClient = response['isClient'];
-      logged = true;
       if (_isClient) {
         currentAddress =
             await _authRepository.fetchDeliveryAt(response['delivery_at']);
       }
-      // if (!loggedUser!.user!.emailVerified) {
-      //   emailVerified = false;
-      // } else {}
+      if (!loggedUser!.user!.emailVerified) {
+        emailVerified = false;
+      } else {
+        logged = true;
+      }
     } on Exception catch (e) {
       if (e as String == 'user-not-found') {
         emailexiste = false;

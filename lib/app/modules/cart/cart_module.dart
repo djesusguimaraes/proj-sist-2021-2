@@ -1,4 +1,3 @@
-import 'package:pscomidas/app/global/utils/auth_guard.dart';
 import 'package:pscomidas/app/modules/cart/cart_page.dart';
 import 'package:pscomidas/app/modules/cart/cart_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
