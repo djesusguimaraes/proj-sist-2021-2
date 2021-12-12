@@ -35,6 +35,9 @@ abstract class _ClientAddressStoreBase with Store {
   String? errorMessage;
 
   @observable
+  bool deleteIt = false;
+
+  @observable
   bool isEditing = false;
 
   void jump(int page) {

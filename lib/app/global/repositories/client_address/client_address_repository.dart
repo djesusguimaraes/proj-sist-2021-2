@@ -22,7 +22,7 @@ class ClientAddressRepository {
           complement: r.complemento!,
           number: null,
           cep: cep,
-          city: r.logradouro!,
+          city: r.localidade!,
           uf: r.uf!,
         ),
       );

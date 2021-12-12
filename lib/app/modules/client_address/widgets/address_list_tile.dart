@@ -19,30 +19,17 @@ class SlidableAddressTile extends StatefulWidget {
 @observable
 class _SlidableAddressTileState extends State<SlidableAddressTile> {
   final ClientAddressStore store = Modular.get();
+  List<ReactionDisposer> disposers = [];
 
   @override
-  Widget build(BuildContext context) {
-    return Slidable(
-      enabled: true,
-      startActionPane: ActionPane(
-        extentRatio: 0.15,
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            icon: Icons.edit,
-            backgroundColor: Colors.transparent,
-            foregroundColor: secondaryColor,
-            onPressed: (context) {
-              store.isEditing = true;
-              store.tempAddress = AppResponse.completed(widget.address);
-              store.jump(2);
-            },
-          ),
-          SlidableAction(
-            icon: Icons.delete,
-            backgroundColor: Colors.transparent,
-            foregroundColor: secondaryColor,
-            onPressed: (context) => AlertDialog(
+  void initState() {
+    disposers = [
+      reaction(
+        (_) => store.deleteIt = true,
+        (_) => showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
               title: const Text(
                 'Você está prestes a deletar um de seus endereços salvos',
                 style: TextStyle(color: Colors.red),
@@ -87,8 +74,46 @@ class _SlidableAddressTileState extends State<SlidableAddressTile> {
                   ),
                 ),
               ],
-            ),
+            );
+          },
+        ),
+      ),
+    ];
+    WidgetsFlutterBinding.ensureInitialized();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    for (var element in disposers) {
+      element.call();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      enabled: true,
+      startActionPane: ActionPane(
+        extentRatio: 0.15,
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            icon: Icons.edit,
+            backgroundColor: Colors.transparent,
+            foregroundColor: secondaryColor,
+            onPressed: (context) {
+              store.isEditing = true;
+              store.tempAddress = AppResponse.completed(widget.address);
+              store.jump(2);
+            },
           ),
+          SlidableAction(
+              icon: Icons.delete,
+              backgroundColor: Colors.transparent,
+              foregroundColor: secondaryColor,
+              onPressed: (_) => store.deleteIt = true),
         ],
       ),
       child: AddressListTile(
