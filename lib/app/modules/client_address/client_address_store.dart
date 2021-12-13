@@ -15,6 +15,9 @@ abstract class _ClientAddressStoreBase with Store {
   final cepController = TextEditingController();
 
   @observable
+  String currentAddress = "Endereço não encontrado";
+
+  @observable
   String filter = "";
 
   @observable
@@ -119,6 +122,15 @@ abstract class _ClientAddressStoreBase with Store {
     } catch (e) {
       errorMessage = e.toString();
       addresses = AppResponse.error(errorMessage);
+    }
+  }
+
+  @action
+  updateDeliveryAt(DeliveryAt address) async {
+    try {
+      await _repository.updateDeliveryAt(address.id!);
+    } catch (e) {
+      throw Exception('fodas');
     }
   }
 

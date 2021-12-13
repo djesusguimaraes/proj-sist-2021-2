@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pscomidas/app/global/models/entities/delivery_at.dart';
+import 'package:pscomidas/app/global/models/enums/address_type.dart';
 import 'package:search_cep/search_cep.dart';
 
 final clientCollection = FirebaseFirestore.instance.collection('clients');
@@ -25,6 +27,7 @@ class ClientAddressRepository {
           city: r.localidade!,
           uf: r.uf!,
           id: id,
+          addressType: FilterAddressType.values.first.stringTotype(null),
         ),
       );
     } catch (e) {
@@ -53,6 +56,14 @@ class ClientAddressRepository {
       return addresses;
     } catch (e) {
       throw Exception('Não foi possível recolher os dados de endereço');
+    }
+  }
+
+  Future<void> updateDeliveryAt(String id) async {
+    try {
+      await clientCollection.doc(currentUser!.uid).update({'delivery_at': id});
+    } catch (e) {
+      throw Exception('Não foi possível atualizar o endereço atual');
     }
   }
 
