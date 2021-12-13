@@ -103,6 +103,7 @@ class ClientAddressRepository {
         'number': address.number,
         'street': address.street,
         'uf': address.uf,
+        'address_type': address.addressType!.label.toLowerCase(),
       }).then((value) async {
         await clientCollection.doc(currentUser!.uid).update(
           {
